@@ -243,6 +243,9 @@ export class PtyManager extends EventEmitter<PtyManagerEvents> {
   }
 
   private trackActivity(rt: Runtime): void {
+    // Saída processada depois do fim do processo (o espelho é assíncrono e, no Linux, o eco do último comando
+    // chega colado ao exit) não reabre a atividade: terminal encerrado fica ocioso.
+    if (!rt.proc) return
     const now = Date.now()
     const matched = rt.patterns.length > 0 && this.lastLineMatches(rt)
     const t = rt.detector.onOutput(now, matched)

@@ -719,6 +719,7 @@ export class NotesService extends EventEmitter<NotesServiceEvents> implements No
       return
     }
     if (!isInside(state.notesDir, p)) return
+    if (event === 'unlink' || event === 'unlinkDir') this.checkRootGone(state)
     const file = rel.split(path.sep).join('/')
     if (event === 'add' || event === 'change' || event === 'unlink') {
       if (noteFileProblem(file)) return
@@ -731,6 +732,21 @@ export class NotesService extends EventEmitter<NotesServiceEvents> implements No
         for (const [key, seen] of state.seen) if (key.startsWith(prefix)) this.scheduleCheck(state, seen, true)
       }
     }
+  }
+
+  /**
+   * Algo foi removido dentro da pasta: confere se a própria pasta sumiu. No Linux (inotify) o chokidar
+   * avisa a remoção dos arquivos, mas nem sempre a da raiz observada; sem isso o watcher ficaria preso à
+   * pasta antiga e não veria a recriada. Confere de novo logo depois, porque o rm apaga a raiz por último.
+   */
+  private checkRootGone(state: WatchState): void {
+    const w = state.watcher
+    const check = (): void => {
+      if (state.closed || !w || state.watcher !== w) return
+      if (!fs.existsSync(state.notesDir)) this.onRootRemoved(state)
+    }
+    check()
+    setTimeout(check, 250).unref()
   }
 
   /** A pasta de notas sumiu: fecha o watcher e religa quando ela voltar a existir. */
