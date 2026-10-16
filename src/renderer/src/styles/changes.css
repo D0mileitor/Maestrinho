@@ -1,0 +1,401 @@
+/* ================================================================== visão Mudanças (revisão do git) */
+
+.changes-root {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 16px 12px;
+  overflow: hidden;
+  background: var(--canvas);
+}
+.changes-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.changes-head h2 {
+  margin: 0;
+  font-family: var(--font-condensed);
+  font-size: calc(17px * var(--font-scale, 1));
+  font-weight: 600;
+}
+.changes-repo {
+  max-width: 420px;
+}
+.changes-branch {
+  padding: 1px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  font-size: calc(12px * var(--font-scale, 1));
+  color: var(--text-2);
+}
+.changes-empty {
+  margin: 12px 4px;
+  color: var(--text-3);
+  font-size: calc(13px * var(--font-scale, 1));
+}
+.changes-warn {
+  margin: 4px 0;
+  color: var(--busy);
+  font-size: calc(12px * var(--font-scale, 1));
+}
+.changes-body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(260px, 340px) 1fr;
+  grid-template-rows: minmax(0, 1fr);
+  gap: 10px;
+}
+.changes-list {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  overflow: hidden;
+}
+.changes-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 8px 8px 4px;
+}
+.changes-filter button {
+  font: inherit;
+  font-size: calc(12px * var(--font-scale, 1));
+  padding: 1px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--text-2);
+  cursor: pointer;
+}
+.changes-filter button[aria-pressed='true'] {
+  background: var(--brass-soft);
+  border-color: var(--brass);
+  color: var(--brass-strong);
+}
+.changes-all {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  font-size: calc(12px * var(--font-scale, 1));
+  color: var(--text-3);
+  border-bottom: 1px solid var(--line);
+}
+.changes-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+.changes-list li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  column-gap: 6px;
+  padding: 2px 8px 2px 10px;
+}
+.changes-list li.current {
+  background: var(--brass-soft);
+}
+.changes-list li input {
+  accent-color: var(--brass);
+}
+.changes-file {
+  all: unset;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 0;
+  cursor: pointer;
+}
+.changes-file:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 1px;
+}
+.changes-kind {
+  width: 16px;
+  height: 16px;
+  display: inline-grid;
+  place-items: center;
+  border-radius: 3px;
+  font-family: var(--font-condensed);
+  font-size: calc(11px * var(--font-scale, 1));
+  font-weight: 600;
+  color: var(--canvas);
+  background: var(--busy);
+}
+.changes-kind.k-new,
+.changes-kind.k-A {
+  background: var(--ok);
+}
+.changes-kind.k-D {
+  background: var(--danger);
+}
+.changes-kind.k-R {
+  background: var(--steel);
+}
+.changes-kind.k-U {
+  background: var(--attention);
+}
+.changes-name {
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.changes-base {
+  font-size: calc(13px * var(--font-scale, 1));
+  color: var(--text);
+}
+.changes-dir {
+  font-size: calc(11.5px * var(--font-scale, 1));
+  color: var(--text-3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  direction: rtl;
+  text-align: left;
+}
+.changes-counts {
+  display: flex;
+  gap: 5px;
+  font-size: calc(11.5px * var(--font-scale, 1));
+  font-variant-numeric: tabular-nums;
+  color: var(--text-3);
+}
+.changes-counts .plus {
+  color: var(--ok);
+}
+.changes-counts .minus {
+  color: var(--danger);
+}
+.changes-agents {
+  grid-column: 2;
+  font-size: calc(11px * var(--font-scale, 1));
+  color: var(--steel);
+  margin: -2px 0 2px 23px;
+}
+.changes-commit {
+  padding: 8px 10px 10px;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 6px;
+}
+.changes-commit textarea {
+  resize: vertical;
+  font-family: var(--font-ui);
+}
+.changes-review {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  flex-wrap: wrap;
+  color: var(--text-2);
+  font-size: calc(12px * var(--font-scale, 1));
+}
+.changes-review .select {
+  max-width: 150px;
+}
+.changes-review-none {
+  flex-basis: 100%;
+  color: var(--text-3);
+  font-size: calc(11.5px * var(--font-scale, 1));
+}
+.changes-commit-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.changes-diff {
+  min-height: 0;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  overflow: hidden;
+  display: flex;
+}
+.changes-pane {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.changes-pane > header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line);
+}
+.changes-pane > header strong {
+  font-size: calc(13px * var(--font-scale, 1));
+  overflow-wrap: anywhere;
+}
+.changes-pane > header .changes-agents {
+  margin: 0;
+}
+.changes-kind-label {
+  font-size: calc(12px * var(--font-scale, 1));
+  color: var(--text-3);
+}
+.changes-code {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  background: var(--term-bg);
+  font-family: 'Cascadia Mono', Consolas, monospace;
+  font-size: calc(12.5px * var(--font-scale, 1));
+  line-height: 1.5;
+}
+.changes-hunk-head {
+  padding: 3px 10px;
+  color: var(--steel);
+  background: var(--surface-2);
+  border-top: 1px solid var(--line);
+  white-space: pre;
+}
+.changes-line {
+  display: grid;
+  grid-template-columns: 46px 46px 16px 1fr;
+  min-width: max-content;
+}
+.changes-line .ln {
+  all: unset;
+  padding-right: 8px;
+  text-align: right;
+  color: var(--text-3);
+  cursor: pointer;
+  user-select: none;
+}
+.changes-line .ln:hover,
+.changes-line .ln:focus-visible {
+  color: var(--brass-strong);
+  text-decoration: underline;
+}
+.changes-line .mark {
+  color: var(--text-3);
+  user-select: none;
+}
+.changes-line code {
+  white-space: pre;
+  font: inherit;
+  color: var(--text);
+  padding-right: 16px;
+}
+.changes-line.add {
+  background: color-mix(in srgb, var(--ok) 14%, transparent);
+}
+.changes-line.add .mark {
+  color: var(--ok);
+}
+.changes-line.del {
+  background: color-mix(in srgb, var(--danger) 13%, transparent);
+}
+.changes-line.del .mark {
+  color: var(--danger);
+}
+.changes-ask {
+  margin: 6px 10px;
+  padding: 8px;
+  display: grid;
+  gap: 6px;
+  border: 1px solid var(--brass);
+  border-radius: 8px;
+  background: var(--surface);
+  font-family: var(--font-ui);
+}
+.changes-ask textarea {
+  resize: vertical;
+  font-family: var(--font-ui);
+}
+.changes-ask-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: calc(12.5px * var(--font-scale, 1));
+  color: var(--text-2);
+}
+
+@media (max-width: 900px) {
+  .changes-body {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(200px, 40%) 1fr;
+  }
+}
+
+/* ------------------------------------------------------------------ checkpoints */
+.checkpoints {
+  position: relative;
+}
+.checkpoints-pop {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 20;
+  width: 340px;
+  max-height: 420px;
+  overflow-y: auto;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+.checkpoints-pop ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+.checkpoints-pop li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 6px;
+  border-radius: 6px;
+}
+.checkpoints-pop li:hover {
+  background: var(--surface-2);
+}
+.checkpoints-pop li.safety strong {
+  color: var(--busy);
+}
+.checkpoints-label {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+}
+.checkpoints-label strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 500;
+  font-size: calc(12.5px * var(--font-scale, 1));
+}
+.checkpoints-label small,
+.checkpoints-note {
+  color: var(--text-3);
+  font-size: calc(11.5px * var(--font-scale, 1));
+}
+.checkpoints-note {
+  margin: 6px 4px;
+}

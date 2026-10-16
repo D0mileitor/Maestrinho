@@ -1,0 +1,40 @@
+  com pontuação e mostra um aviso ao usuário"; (2) cabeçalho "Validação",
+pergunta "Quais campos devem ser
+  validados antes de salvar?", multiSelect verdadeiro, opções "CPF", "Nome
+ completo", "Data de nascimento".
+──────────────────────────────────────────────────────────────────────────
+────────────────────────────────────
+←  ☐ Formato  ☐ Validação  ✔ Submit  →
+❯ Use a ferramenta AskUserQuestion agora, sem fazer
+  mais nada, com DUAS perguntas: (1) cabeçalho
+  "Formato", pergunta "A busca deve aceitar o CPF com e
+  sem pontuação, ou só os 11 dígitos sem nenhum
+  separador?", opções "Aceitar os dois formatos
+  (Recomendado)" com descrição "Remove pontos, traço e
+  espaços antes de buscar no banco, mantendo
+  compatibilidade com os dados antigos" e "Só números"
+  com descrição "Rejeita CPF com pontuação e mostra um
+  aviso ao usuário"; (2) cabeçalho "Validação",
+  pergunta "Quais campos devem ser validados antes de
+  compatibilidade com os dados antigos" e "Só números" com descrição
+  "Rejeita CPF com pontuação e mostra um aviso ao usuário"; (2) cabeçalho
+  "Validação", pergunta "Quais campos devem ser validados antes de
+  salvar?", multiSelect verdadeiro, opções "CPF", "Nome completo", "Data
+  de nascimento".
+──────────────────────────────────────────────────────────────────────────
+←  ☒ Formato  ☐ Validação  ✔ Submit  →
+
+Quais campos devem ser validados antes de salvar?
+
+❯ 1. [ ] CPF
+         Validar o CPF antes de salvar
+  2. [ ] Nome completo
+         Validar o nome completo antes de salvar
+  3. [ ] Data de nascimento
+         Validar a data de nascimento antes de salvar
+  4. [ ] Type something
+     Submit
+──────────────────────────────────────────────────────────────────────────
+  5. Chat about this
+
+Enter to select · Tab/Arrow keys to navigate · Esc to cancel

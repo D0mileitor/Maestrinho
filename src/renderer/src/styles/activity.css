@@ -1,0 +1,152 @@
+/* ================================================================== Linha do tempo */
+
+.titlebar .activity-btn {
+  margin-left: auto;
+  height: 24px;
+  -webkit-app-region: no-drag;
+}
+.titlebar .activity-btn + .usage-btn {
+  margin-left: 2px;
+}
+.activity-count {
+  min-width: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--brass);
+  color: #1a1407;
+  font-size: calc(10.5px * var(--font-scale, 1));
+  font-weight: 600;
+  line-height: calc(15px * var(--font-scale, 1));
+  text-align: center;
+}
+.activity-btn.active .activity-count {
+  background: #1a1407;
+  color: var(--brass-strong);
+}
+
+.activity-panel {
+  position: absolute;
+  top: 6px;
+  right: 12px;
+  z-index: 40;
+  width: 360px;
+  max-width: calc(100% - 24px);
+  max-height: calc(100% - 18px);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.activity-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px 8px 12px;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-2);
+}
+.activity-head strong {
+  color: var(--text);
+}
+.activity-empty {
+  margin: 12px;
+  color: var(--text-2);
+  font-size: calc(12.5px * var(--font-scale, 1));
+}
+.activity-list {
+  list-style: none;
+  margin: 0;
+  padding: 4px 6px;
+  overflow-y: auto;
+}
+.activity-item {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 3px 4px;
+  border-left: 2px solid transparent;
+}
+.activity-item time {
+  flex: none;
+  width: 40px;
+  color: var(--text-3);
+  font-size: calc(11.5px * var(--font-scale, 1));
+  font-variant-numeric: tabular-nums;
+}
+.activity-item.waiting,
+.activity-item.exited {
+  border-left-color: var(--busy);
+}
+.activity-item.done {
+  border-left-color: var(--ok);
+}
+.activity-text {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-size: calc(12.5px * var(--font-scale, 1));
+  text-align: left;
+  cursor: pointer;
+}
+.activity-text:disabled {
+  cursor: default;
+}
+.activity-text:not(:disabled):hover {
+  text-decoration: underline;
+}
+.activity-text small {
+  color: var(--text-3);
+}
+.activity-mood {
+  margin-left: 6px;
+  padding: 0 6px;
+  border-radius: 999px;
+  font-size: calc(11px * var(--font-scale, 1));
+}
+.activity-mood.complaint {
+  background: color-mix(in srgb, var(--danger) 18%, transparent);
+  color: var(--danger);
+}
+.activity-mood.praise {
+  background: color-mix(in srgb, var(--ok) 18%, transparent);
+  color: var(--ok);
+}
+
+/* Resumo "enquanto você estava fora" */
+.away-card {
+  position: absolute;
+  top: 48px;
+  right: 12px;
+  z-index: 45;
+  width: 360px;
+  max-width: calc(100% - 24px);
+  padding: 12px 14px;
+  border: 1px solid color-mix(in srgb, var(--brass) 45%, var(--line));
+  border-radius: 10px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+.away-card ul {
+  margin: 8px 0 10px;
+  padding-left: 18px;
+  display: grid;
+  gap: 4px;
+  color: var(--text-2);
+  font-size: calc(12.5px * var(--font-scale, 1));
+}
+.away-card li.warn {
+  color: var(--busy);
+  font-weight: 600;
+}
+.away-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}

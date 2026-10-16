@@ -1,0 +1,40 @@
+  espaços antes de buscar no banco, mantendo
+  compatibilidade com os dados antigos" e "Só números"
+  com descrição "Rejeita CPF com pontuação e mostra um
+  aviso ao usuário"; (2) cabeçalho "Validação",
+  "Rejeita CPF com pontuação e mostra um aviso ao usuário"; (2) cabeçalho
+  "Validação", pergunta "Quais campos devem ser validados antes de
+  salvar?", multiSelect verdadeiro, opções "CPF", "Nome completo", "Data
+  de nascimento".
+
+● User declined to answer questions
+  ⎿  · A busca deve aceitar o CPF com e sem pontuação, ou só os 11 dígitos
+     sem nenhum separador? (Aceitar os dois formatos (Recomendado) / Só
+     números)
+     · Quais campos devem ser validados antes de salvar? (CPF / Nome
+     completo / Data de nascimento)
+
+✻ Worked for 1s · done 16:55
+
+❯ Use a ferramenta AskUserQuestion agora, sem fazer mais nada, com UMA
+  pergunta: "Qual layout usar na tela de busca?", opções "Lista simples"
+  com preview "┌──────┐\n│ item │\n│ item │\n└──────┘" e "Grade de
+  cartões" com preview "┌──┐┌──┐\n│  ││  │\n└──┘└──┘" e "Tabela com
+  filtros" com preview "| a | b |\n|---|---|\n| 1 | 2 |".
+
+──────────────────────────────────────────────────────────────────────────
+ ☐ Layout
+
+Qual layout usar na tela de busca?
+
+❯ 1. Lista simples                ┌──────────────────────────────────────┐
+  2. Grade de cartões             │ ┌──────┐                             │
+  3. Tabela com filtros           ├─── ✂ ─── 3 lines hidden ─────────────┤
+                                  └──────────────────────────────────────┘
+
+                                  Notes: press n to add notes
+
+──────────────────────────────────────────────────────────────────────────
+  Chat about this
+
+Enter to select · ↑/↓ to navigate · n to add notes · Esc to cancel

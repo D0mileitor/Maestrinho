@@ -1,0 +1,122 @@
+/*
+ * Hint do Maestrinho: painel da cor da superfície com uma régua de latão à esquerda; ao lado do título corre
+ * um trecho de pauta (cinco linhas finas) até os atalhos, como nas pautas do canvas.
+ */
+.hint {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 10000;
+  max-width: min(320px, calc(100vw - 16px));
+  padding: 7px 11px 8px 13px;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow);
+  font-family: var(--font-ui);
+  font-size: calc(12px * var(--font-scale, 1));
+  line-height: 1.42;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.12s ease,
+    visibility 0s linear 0.12s;
+}
+.hint.on {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.12s ease;
+}
+.hint::before {
+  content: '';
+  position: absolute;
+  left: -1px;
+  top: 7px;
+  bottom: 7px;
+  width: 3px;
+  border-radius: 0 2px 2px 0;
+  background: var(--brass);
+}
+.hint-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hint-title {
+  font-family: var(--font-condensed);
+  font-weight: 600;
+  font-size: calc(12.5px * var(--font-scale, 1));
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+.hint-staff {
+  flex: 1;
+  min-width: 16px;
+  height: 9px;
+  background: repeating-linear-gradient(to bottom, var(--line-strong) 0 1px, transparent 1px 2px);
+  opacity: 0.6;
+}
+.hint-keys {
+  display: inline-flex;
+  flex: none;
+  gap: 6px;
+}
+.hint-keys[hidden] {
+  display: none;
+}
+.hint-combo {
+  display: inline-flex;
+  gap: 2px;
+}
+.hint-combo .kbd {
+  min-width: 17px;
+  padding: 0 4px;
+  border-color: var(--line-strong);
+  font-family: var(--font-condensed);
+  font-size: calc(10.5px * var(--font-scale, 1));
+  line-height: calc(15px * var(--font-scale, 1));
+  color: var(--brass-strong);
+}
+.hint-body {
+  margin-top: 3px;
+  color: var(--text-2);
+  white-space: pre-line;
+}
+.hint-body[hidden] {
+  display: none;
+}
+.hint-arrow {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--surface);
+  transform: rotate(45deg);
+}
+.hint[data-side='below'] .hint-arrow {
+  top: -5px;
+  border-left: 1px solid var(--line-strong);
+  border-top: 1px solid var(--line-strong);
+}
+.hint[data-side='above'] .hint-arrow {
+  bottom: -5px;
+  border-right: 1px solid var(--line-strong);
+  border-bottom: 1px solid var(--line-strong);
+}
+.hint[data-side='right'] .hint-arrow {
+  left: -5px;
+  border-left: 1px solid var(--line-strong);
+  border-bottom: 1px solid var(--line-strong);
+}
+.hint[data-side='left'] .hint-arrow {
+  right: -5px;
+  border-right: 1px solid var(--line-strong);
+  border-top: 1px solid var(--line-strong);
+}
+@media (prefers-reduced-motion: reduce) {
+  .hint,
+  .hint.on {
+    transition: none;
+  }
+}

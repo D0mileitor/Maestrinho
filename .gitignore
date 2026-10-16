@@ -1,0 +1,10 @@
+node_modules/
+out/
+dist/
+release/
+*.log
+.vite/
+coverage/
+# metadados de workspace criados ao usar o app nesta pasta
+.maestrinho/
+test-results/

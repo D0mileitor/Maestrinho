@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "name": "Refatoração segura em passos pequenos",
+  "createdAt": "2026-10-07T12:00:00.000Z",
+  "nodes": [
+    {
+      "id": "s-titulo",
+      "kind": "shape",
+      "shape": "text",
+      "text": "Refatoração: mapeador planeja (plano-refatoracao.md) → executor aplica passo a passo → guardião confere cada passo",
+      "color": "",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "w": 1920,
+        "h": 60
+      }
+    },
+    {
+      "id": "t-mapeador",
+      "kind": "terminal",
+      "name": "mapeador",
+      "presetId": "claude",
+      "roleId": "r-refat-mapeador",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 0,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "t-executor",
+      "kind": "terminal",
+      "name": "executor",
+      "presetId": "claude",
+      "roleId": "r-refat-executor",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 660,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "t-guardiao",
+      "kind": "terminal",
+      "name": "guardiao",
+      "presetId": "codex",
+      "roleId": "r-refat-guardiao",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 1320,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "n-plano-refatoracao",
+      "kind": "note",
+      "file": "plano-refatoracao.md",
+      "position": {
+        "x": 160,
+        "y": 580
+      },
+      "size": {
+        "w": 560,
+        "h": 440
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-mapeador-executor",
+      "source": "t-mapeador",
+      "target": "t-executor"
+    },
+    {
+      "id": "e-executor-guardiao",
+      "source": "t-executor",
+      "target": "t-guardiao"
+    },
+    {
+      "id": "e-mapeador-plano-refatoracao",
+      "source": "t-mapeador",
+      "target": "n-plano-refatoracao"
+    },
+    {
+      "id": "e-executor-plano-refatoracao",
+      "source": "t-executor",
+      "target": "n-plano-refatoracao"
+    },
+    {
+      "id": "e-guardiao-plano-refatoracao",
+      "source": "t-guardiao",
+      "target": "n-plano-refatoracao"
+    }
+  ],
+  "roles": [
+    {
+      "id": "r-refat-mapeador",
+      "name": "Refat - Mapeador",
+      "color": "#b48ead",
+      "instructions": "Você é o MAPEADOR. Antes de qualquer refatoração, entende o código e planeja passos pequenos e seguros.\n1. Mapeie o trecho: quem chama o quê, dependências, efeitos colaterais, cobertura de testes existente.\n2. Escreva em plano-refatoracao.md uma lista de passos pequenos; cada passo deve manter o comportamento e os testes verdes.\n3. Se faltar teste para proteger um comportamento, o primeiro passo é escrever esse teste.\n4. Entregue ao executor: `orq send executor \"Plano pronto em plano-refatoracao.md (N passos)\"`.\n\nCOMO CONVERSAR COM OS COLEGAS\n- `orq peers` mostra com quem você está conectado no canvas (use os nomes que aparecerem lá).\n- `orq send <nome> \"mensagem\"` entrega uma mensagem; acrescente `--wait` quando precisar da resposta para seguir.\n- `orq read <nome>` mostra a tela de um colega (útil para ver se ele travou numa pergunta).\n- Quadros compartilhados: `orq note read <nota>`, `orq note append <nota> \"texto\"` e `orq note write <nota> -` (conteúdo pela entrada padrão).\n- Mensagens curtas e objetivas: o que foi feito, onde (arquivos e linhas), o que falta e o que você espera do colega.\n- Não faça commit, push nem nada irreversível sem o usuário pedir explicitamente.",
+      "builtin": false
+    },
+    {
+      "id": "r-refat-executor",
+      "name": "Refat - Executor",
+      "color": "#5b8def",
+      "instructions": "Você é o EXECUTOR da refatoração. Segue plano-refatoracao.md um passo por vez.\nDepois de cada passo: rode os testes e peça a conferência ao guardião (`orq send guardiao \"Passo N feito: ...\"`).\nSó avance quando ele confirmar. Não mude comportamento; se precisar, pare e fale com o mapeador e o usuário.\n\nCOMO CONVERSAR COM OS COLEGAS\n- `orq peers` mostra com quem você está conectado no canvas (use os nomes que aparecerem lá).\n- `orq send <nome> \"mensagem\"` entrega uma mensagem; acrescente `--wait` quando precisar da resposta para seguir.\n- `orq read <nome>` mostra a tela de um colega (útil para ver se ele travou numa pergunta).\n- Quadros compartilhados: `orq note read <nota>`, `orq note append <nota> \"texto\"` e `orq note write <nota> -` (conteúdo pela entrada padrão).\n- Mensagens curtas e objetivas: o que foi feito, onde (arquivos e linhas), o que falta e o que você espera do colega.\n- Não faça commit, push nem nada irreversível sem o usuário pedir explicitamente.",
+      "builtin": false
+    },
+    {
+      "id": "r-refat-guardiao",
+      "name": "Refat - Guardião",
+      "color": "#59b37a",
+      "instructions": "Você é o GUARDIÃO do comportamento. A cada passo do executor: rode a suíte, o build e o lint; compare saídas,\ncontratos públicos e desempenho quando fizer sentido. Responda \"passo N ok\" ou o problema com o comando que o mostra.\nRegistre o andamento em plano-refatoracao.md.\n\nCOMO CONVERSAR COM OS COLEGAS\n- `orq peers` mostra com quem você está conectado no canvas (use os nomes que aparecerem lá).\n- `orq send <nome> \"mensagem\"` entrega uma mensagem; acrescente `--wait` quando precisar da resposta para seguir.\n- `orq read <nome>` mostra a tela de um colega (útil para ver se ele travou numa pergunta).\n- Quadros compartilhados: `orq note read <nota>`, `orq note append <nota> \"texto\"` e `orq note write <nota> -` (conteúdo pela entrada padrão).\n- Mensagens curtas e objetivas: o que foi feito, onde (arquivos e linhas), o que falta e o que você espera do colega.\n- Não faça commit, push nem nada irreversível sem o usuário pedir explicitamente.",
+      "builtin": false
+    }
+  ],
+  "notes": {
+    "plano-refatoracao.md": "# Plano de refatoração\n\n## Objetivo\n\n## Mapa do código\n\n## Passos\n\n- [ ] 1.\n\n## Andamento\n"
+  },
+  "hub": {
+    "id": "refatoracao-segura",
+    "description": "Mapeador planeja passos pequenos (com testes de proteção primeiro), executor aplica um por vez e guardião confere que o comportamento não mudou.",
+    "tags": [
+      "refatoração",
+      "testes",
+      "qualidade"
+    ],
+    "author": "Equipe Maestrinho",
+    "version": "1.0"
+  }
+}

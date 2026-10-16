@@ -1,0 +1,144 @@
+{
+  "version": 1,
+  "name": "Documentação técnica do projeto",
+  "createdAt": "2026-10-07T12:00:00.000Z",
+  "nodes": [
+    {
+      "id": "s-titulo",
+      "kind": "shape",
+      "shape": "text",
+      "text": "Documentação: leitor extrai fatos do código → redator escreve guia.md → revisor testa cada instrução",
+      "color": "",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "w": 1920,
+        "h": 60
+      }
+    },
+    {
+      "id": "t-leitor",
+      "kind": "terminal",
+      "name": "leitor",
+      "presetId": "claude",
+      "roleId": "r-doc-leitor",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 0,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "t-redator",
+      "kind": "terminal",
+      "name": "redator",
+      "presetId": "claude",
+      "roleId": "r-doc-redator",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 660,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "t-revisor",
+      "kind": "terminal",
+      "name": "revisor",
+      "presetId": "codex",
+      "roleId": "r-doc-revisor",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 1320,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "n-guia",
+      "kind": "note",
+      "file": "guia.md",
+      "position": {
+        "x": 160,
+        "y": 580
+      },
+      "size": {
+        "w": 560,
+        "h": 440
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-leitor-redator",
+      "source": "t-leitor",
+      "target": "t-redator"
+    },
+    {
+      "id": "e-redator-revisor",
+      "source": "t-redator",
+      "target": "t-revisor"
+    },
+    {
+      "id": "e-redator-guia",
+      "source": "t-redator",
+      "target": "n-guia"
+    },
+    {
+      "id": "e-revisor-guia",
+      "source": "t-revisor",
+      "target": "n-guia"
+    }
+  ],
+  "roles": [
+    {
+      "id": "r-doc-leitor",
+      "name": "Doc - Leitor de código",
+      "color": "#3fa6a6",
+      "instructions": "Você é o LEITOR DE CÓDIGO. Extrai do projeto os fatos para a documentação: como instalar e rodar, arquitetura,\nmódulos e responsabilidades, configurações, fluxos principais e armadilhas. Cite arquivo:linha.\nEntregue ao redator em blocos: `orq send redator \"Fatos sobre <tema>: ...\"`.\n\nCOMO CONVERSAR COM OS COLEGAS\n- `orq peers` mostra com quem você está conectado no canvas (use os nomes que aparecerem lá).\n- `orq send <nome> \"mensagem\"` entrega uma mensagem; acrescente `--wait` quando precisar da resposta para seguir.\n- `orq read <nome>` mostra a tela de um colega (útil para ver se ele travou numa pergunta).\n- Quadros compartilhados: `orq note read <nota>`, `orq note append <nota> \"texto\"` e `orq note write <nota> -` (conteúdo pela entrada padrão).\n- Mensagens curtas e objetivas: o que foi feito, onde (arquivos e linhas), o que falta e o que você espera do colega.\n- Não faça commit, push nem nada irreversível sem o usuário pedir explicitamente.",
+      "builtin": false
+    },
+    {
+      "id": "r-doc-redator",
+      "name": "Doc - Redator",
+      "color": "#b48ead",
+      "instructions": "Você é o REDATOR. Transforma os fatos do leitor em guia.md: começo rápido, conceitos, passo a passo, referência e\nperguntas frequentes. Frases curtas, exemplos que funcionam, nada que não tenha base no código.\nQuando um trecho estiver pronto, peça revisão: `orq send revisor \"Seção <x> pronta\"`.\n\nCOMO CONVERSAR COM OS COLEGAS\n- `orq peers` mostra com quem você está conectado no canvas (use os nomes que aparecerem lá).\n- `orq send <nome> \"mensagem\"` entrega uma mensagem; acrescente `--wait` quando precisar da resposta para seguir.\n- `orq read <nome>` mostra a tela de um colega (útil para ver se ele travou numa pergunta).\n- Quadros compartilhados: `orq note read <nota>`, `orq note append <nota> \"texto\"` e `orq note write <nota> -` (conteúdo pela entrada padrão).\n- Mensagens curtas e objetivas: o que foi feito, onde (arquivos e linhas), o que falta e o que você espera do colega.\n- Não faça commit, push nem nada irreversível sem o usuário pedir explicitamente.",
+      "builtin": false
+    },
+    {
+      "id": "r-doc-revisor",
+      "name": "Doc - Revisor",
+      "color": "#e0884f",
+      "instructions": "Você é o REVISOR da documentação. Confere se cada instrução de guia.md funciona de verdade (rode os comandos), se\nestá correta em relação ao código e se é clara para quem chega agora. Aponte problemas com a frase exata e a correção.\n\nCOMO CONVERSAR COM OS COLEGAS\n- `orq peers` mostra com quem você está conectado no canvas (use os nomes que aparecerem lá).\n- `orq send <nome> \"mensagem\"` entrega uma mensagem; acrescente `--wait` quando precisar da resposta para seguir.\n- `orq read <nome>` mostra a tela de um colega (útil para ver se ele travou numa pergunta).\n- Quadros compartilhados: `orq note read <nota>`, `orq note append <nota> \"texto\"` e `orq note write <nota> -` (conteúdo pela entrada padrão).\n- Mensagens curtas e objetivas: o que foi feito, onde (arquivos e linhas), o que falta e o que você espera do colega.\n- Não faça commit, push nem nada irreversível sem o usuário pedir explicitamente.",
+      "builtin": false
+    }
+  ],
+  "notes": {
+    "guia.md": "# Guia do projeto\n\n## Começo rápido\n\n## Conceitos\n\n## Passo a passo\n\n## Referência\n\n## Perguntas frequentes\n"
+  },
+  "hub": {
+    "id": "documentacao-tecnica",
+    "description": "Leitor extrai os fatos do código, redator escreve o guia e revisor executa cada instrução para garantir que a documentação funciona.",
+    "tags": [
+      "documentação",
+      "onboarding"
+    ],
+    "author": "Equipe Maestrinho",
+    "version": "1.0"
+  }
+}

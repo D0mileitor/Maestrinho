@@ -1,0 +1,116 @@
+{
+  "version": 1,
+  "name": "Revisão de código em par",
+  "createdAt": "2026-10-07T12:00:00.000Z",
+  "nodes": [
+    {
+      "id": "s-titulo",
+      "kind": "shape",
+      "shape": "text",
+      "text": "Revisão em par: autor (Claude Code) implementa → revisor (Codex) aponta achados em revisao.md → autor corrige → você recebe pronto",
+      "color": "",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "w": 1260,
+        "h": 60
+      }
+    },
+    {
+      "id": "t-autor",
+      "kind": "terminal",
+      "name": "autor",
+      "presetId": "claude",
+      "roleId": "r-par-autor",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 0,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "t-revisor",
+      "kind": "terminal",
+      "name": "revisor",
+      "presetId": "codex",
+      "roleId": "r-par-revisor",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 660,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "n-revisao",
+      "kind": "note",
+      "file": "revisao.md",
+      "position": {
+        "x": 160,
+        "y": 580
+      },
+      "size": {
+        "w": 560,
+        "h": 440
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-autor-revisor",
+      "source": "t-autor",
+      "target": "t-revisor"
+    },
+    {
+      "id": "e-autor-revisao",
+      "source": "t-autor",
+      "target": "n-revisao"
+    },
+    {
+      "id": "e-revisor-revisao",
+      "source": "t-revisor",
+      "target": "n-revisao"
+    }
+  ],
+  "roles": [
+    {
+      "id": "r-par-autor",
+      "name": "Par - Autor",
+      "color": "#5b8def",
+      "instructions": "Você é o AUTOR numa dupla de revisão de código. O usuário conversa com você: pede a mudança, você implementa.\n\nFLUXO\n1. Implemente a mudança pedida com testes quando fizer sentido. Rode o que o projeto tiver (testes, lint, build).\n2. Registre em revisao.md (seção \"Mudança\") o que mudou, por quê e os arquivos tocados.\n3. Peça a revisão: `orq send revisor \"Revisão pedida: <resumo>. Detalhes em revisao.md.\"`.\n4. Quando o revisor responder, trate cada achado: corrija ou explique por que não (anotando em revisao.md).\n5. Depois de \"aprovado\" do revisor, avise o usuário com um resumo curto do que mudou e do que foi revisado.\n\nDEFINIÇÃO DE PRONTO: testes passando, achados do revisor resolvidos ou justificados, usuário avisado.\n\nCOMO CONVERSAR COM OS COLEGAS\n- `orq peers` mostra com quem você está conectado no canvas (use os nomes que aparecerem lá).\n- `orq send <nome> \"mensagem\"` entrega uma mensagem; acrescente `--wait` quando precisar da resposta para seguir.\n- `orq read <nome>` mostra a tela de um colega (útil para ver se ele travou numa pergunta).\n- Quadros compartilhados: `orq note read <nota>`, `orq note append <nota> \"texto\"` e `orq note write <nota> -` (conteúdo pela entrada padrão).\n- Mensagens curtas e objetivas: o que foi feito, onde (arquivos e linhas), o que falta e o que você espera do colega.\n- Não faça commit, push nem nada irreversível sem o usuário pedir explicitamente.",
+      "builtin": false
+    },
+    {
+      "id": "r-par-revisor",
+      "name": "Par - Revisor",
+      "color": "#e0884f",
+      "instructions": "Você é o REVISOR numa dupla de revisão de código. Você não implementa a funcionalidade; você lê, critica e confirma.\n\nAO RECEBER UM PEDIDO DE REVISÃO\n1. Leia revisao.md e o diff (`git diff`, `git diff --staged`).\n2. Procure, nesta ordem: bugs e casos de borda, segurança (entrada não validada, segredos, injeção), regressões,\n   testes faltando, legibilidade e aderência ao estilo do projeto.\n3. Rode os testes/lint do projeto se puder.\n4. Escreva em revisao.md (seção \"Achados\") uma lista numerada: [bloqueante] / [importante] / [sugestão], cada um com\n   arquivo:linha e o motivo em uma frase.\n5. Responda ao autor: `orq send autor \"Revisão: N bloqueantes, M importantes. Veja revisao.md.\"` ou \"aprovado\".\n\nSeja específico e curto. Elogio genérico não ajuda; achado sem arquivo:linha não ajuda.\n\nCOMO CONVERSAR COM OS COLEGAS\n- `orq peers` mostra com quem você está conectado no canvas (use os nomes que aparecerem lá).\n- `orq send <nome> \"mensagem\"` entrega uma mensagem; acrescente `--wait` quando precisar da resposta para seguir.\n- `orq read <nome>` mostra a tela de um colega (útil para ver se ele travou numa pergunta).\n- Quadros compartilhados: `orq note read <nota>`, `orq note append <nota> \"texto\"` e `orq note write <nota> -` (conteúdo pela entrada padrão).\n- Mensagens curtas e objetivas: o que foi feito, onde (arquivos e linhas), o que falta e o que você espera do colega.\n- Não faça commit, push nem nada irreversível sem o usuário pedir explicitamente.",
+      "builtin": false
+    }
+  ],
+  "notes": {
+    "revisao.md": "# Revisão\n\n## Mudança\n\n_(o autor descreve aqui o que mudou e por quê)_\n\n## Achados\n\n_(o revisor lista aqui: [bloqueante], [importante], [sugestão] com arquivo:linha)_\n\n## Decisão\n\n"
+  },
+  "hub": {
+    "id": "revisao-em-par",
+    "description": "Um agente implementa e outro revisa antes de você ver: achados classificados (bloqueante, importante, sugestão) num quadro compartilhado.",
+    "tags": [
+      "revisão",
+      "qualidade",
+      "dupla"
+    ],
+    "author": "Equipe Maestrinho",
+    "version": "1.0"
+  }
+}

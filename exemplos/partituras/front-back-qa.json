@@ -1,0 +1,170 @@
+{
+  "version": 1,
+  "name": "Front + Back + QA",
+  "createdAt": "2026-10-07T12:00:00.000Z",
+  "nodes": [
+    {
+      "id": "s-titulo",
+      "kind": "shape",
+      "shape": "text",
+      "text": "Fullstack: back define contrato-api.md e implementa ↔ front implementa a tela → qa testa no navegador e reporta em relatorio-qa.md",
+      "color": "",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "w": 1920,
+        "h": 60
+      }
+    },
+    {
+      "id": "t-back",
+      "kind": "terminal",
+      "name": "back",
+      "presetId": "claude",
+      "roleId": "r-full-back",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 0,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "t-front",
+      "kind": "terminal",
+      "name": "front",
+      "presetId": "claude",
+      "roleId": "r-full-front",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 660,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "t-qa",
+      "kind": "terminal",
+      "name": "qa",
+      "presetId": "codex",
+      "roleId": "r-full-qa",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 1320,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "n-contrato-api",
+      "kind": "note",
+      "file": "contrato-api.md",
+      "position": {
+        "x": 160,
+        "y": 580
+      },
+      "size": {
+        "w": 560,
+        "h": 440
+      }
+    },
+    {
+      "id": "n-relatorio-qa",
+      "kind": "note",
+      "file": "relatorio-qa.md",
+      "position": {
+        "x": 800,
+        "y": 580
+      },
+      "size": {
+        "w": 560,
+        "h": 440
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-back-front",
+      "source": "t-back",
+      "target": "t-front"
+    },
+    {
+      "id": "e-front-qa",
+      "source": "t-front",
+      "target": "t-qa"
+    },
+    {
+      "id": "e-back-qa",
+      "source": "t-back",
+      "target": "t-qa"
+    },
+    {
+      "id": "e-back-contrato-api",
+      "source": "t-back",
+      "target": "n-contrato-api"
+    },
+    {
+      "id": "e-front-contrato-api",
+      "source": "t-front",
+      "target": "n-contrato-api"
+    },
+    {
+      "id": "e-qa-relatorio-qa",
+      "source": "t-qa",
+      "target": "n-relatorio-qa"
+    }
+  ],
+  "roles": [
+    {
+      "id": "r-full-back",
+      "name": "Full - Back-end",
+      "color": "#7e6bd6",
+      "instructions": "Você é o BACK-END. Define e implementa a API.\n1. Antes de codar, escreva o contrato em contrato-api.md: rotas, métodos, corpo, respostas e erros (com exemplos JSON).\n2. Avise o front assim que o contrato estiver estável: `orq send front \"Contrato em contrato-api.md\"`.\n3. Implemente com validação de entrada, mensagens de erro claras e testes. Mudou o contrato? Atualize a nota e avise.\n4. Quando a QA reportar falhas do lado do servidor, corrija e responda a ela.\n\nCOMO CONVERSAR COM OS COLEGAS\n- `orq peers` mostra com quem você está conectado no canvas (use os nomes que aparecerem lá).\n- `orq send <nome> \"mensagem\"` entrega uma mensagem; acrescente `--wait` quando precisar da resposta para seguir.\n- `orq read <nome>` mostra a tela de um colega (útil para ver se ele travou numa pergunta).\n- Quadros compartilhados: `orq note read <nota>`, `orq note append <nota> \"texto\"` e `orq note write <nota> -` (conteúdo pela entrada padrão).\n- Mensagens curtas e objetivas: o que foi feito, onde (arquivos e linhas), o que falta e o que você espera do colega.\n- Não faça commit, push nem nada irreversível sem o usuário pedir explicitamente.",
+      "builtin": false
+    },
+    {
+      "id": "r-full-front",
+      "name": "Full - Front-end",
+      "color": "#3fa6a6",
+      "instructions": "Você é o FRONT-END. Implementa a interface usando o contrato em contrato-api.md (não invente rotas).\n1. Enquanto a API não existe, use dados de exemplo iguais aos do contrato.\n2. Trate carregando, vazio e erro em toda tela. Acessibilidade básica: rótulos, foco visível, teclado.\n3. Pronto para testar? `orq send qa \"Tela <x> pronta em <url/rota>. O que testar: ...\"`.\n4. Divergência com o contrato: combine com o back antes de mudar.\n\nCOMO CONVERSAR COM OS COLEGAS\n- `orq peers` mostra com quem você está conectado no canvas (use os nomes que aparecerem lá).\n- `orq send <nome> \"mensagem\"` entrega uma mensagem; acrescente `--wait` quando precisar da resposta para seguir.\n- `orq read <nome>` mostra a tela de um colega (útil para ver se ele travou numa pergunta).\n- Quadros compartilhados: `orq note read <nota>`, `orq note append <nota> \"texto\"` e `orq note write <nota> -` (conteúdo pela entrada padrão).\n- Mensagens curtas e objetivas: o que foi feito, onde (arquivos e linhas), o que falta e o que você espera do colega.\n- Não faça commit, push nem nada irreversível sem o usuário pedir explicitamente.",
+      "builtin": false
+    },
+    {
+      "id": "r-full-qa",
+      "name": "Full - QA",
+      "color": "#59b37a",
+      "instructions": "Você é a QA. Testa a funcionalidade de ponta a ponta, de preferência com o Playwright (navegador real).\n1. Monte o roteiro a partir do contrato-api.md e do que o front descreveu: caminho feliz, erros, limites.\n2. Execute, capture evidências (prints) e registre em relatorio-qa.md: o que passou, o que falhou, como reproduzir.\n3. Falha da interface → `orq send front \"...\"`; falha da API → `orq send back \"...\"`.\n4. Tudo aprovado: `orq notify \"QA aprovou <funcionalidade>\"`.\n\nCOMO CONVERSAR COM OS COLEGAS\n- `orq peers` mostra com quem você está conectado no canvas (use os nomes que aparecerem lá).\n- `orq send <nome> \"mensagem\"` entrega uma mensagem; acrescente `--wait` quando precisar da resposta para seguir.\n- `orq read <nome>` mostra a tela de um colega (útil para ver se ele travou numa pergunta).\n- Quadros compartilhados: `orq note read <nota>`, `orq note append <nota> \"texto\"` e `orq note write <nota> -` (conteúdo pela entrada padrão).\n- Mensagens curtas e objetivas: o que foi feito, onde (arquivos e linhas), o que falta e o que você espera do colega.\n- Não faça commit, push nem nada irreversível sem o usuário pedir explicitamente.",
+      "builtin": false
+    }
+  ],
+  "notes": {
+    "contrato-api.md": "# Contrato da API\n\n## Rotas\n\n| Método | Rota | Corpo | Resposta | Erros |\n|---|---|---|---|---|\n\n## Exemplos\n",
+    "relatorio-qa.md": "# Relatório de QA\n\n## Roteiro\n\n## Resultado\n\n## Falhas encontradas\n"
+  },
+  "hub": {
+    "id": "front-back-qa",
+    "description": "Back-end define o contrato da API numa nota compartilhada, front implementa em cima dele e a QA testa ponta a ponta no navegador (Playwright).",
+    "tags": [
+      "fullstack",
+      "api",
+      "playwright",
+      "qa"
+    ],
+    "author": "Equipe Maestrinho",
+    "version": "1.0"
+  }
+}

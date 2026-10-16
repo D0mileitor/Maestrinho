@@ -1,0 +1,116 @@
+{
+  "version": 1,
+  "name": "TDD em dupla (testes primeiro)",
+  "createdAt": "2026-10-07T12:00:00.000Z",
+  "nodes": [
+    {
+      "id": "s-titulo",
+      "kind": "shape",
+      "shape": "text",
+      "text": "TDD: testes escreve especificação e testes falhando → dev implementa até ficar verde → testes confere e amplia",
+      "color": "",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "w": 1260,
+        "h": 60
+      }
+    },
+    {
+      "id": "t-testes",
+      "kind": "terminal",
+      "name": "testes",
+      "presetId": "codex",
+      "roleId": "r-tdd-testes",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 0,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "t-dev",
+      "kind": "terminal",
+      "name": "dev",
+      "presetId": "claude",
+      "roleId": "r-tdd-dev",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 660,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "n-especificacao",
+      "kind": "note",
+      "file": "especificacao.md",
+      "position": {
+        "x": 160,
+        "y": 580
+      },
+      "size": {
+        "w": 560,
+        "h": 440
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-testes-dev",
+      "source": "t-testes",
+      "target": "t-dev"
+    },
+    {
+      "id": "e-testes-especificacao",
+      "source": "t-testes",
+      "target": "n-especificacao"
+    },
+    {
+      "id": "e-dev-especificacao",
+      "source": "t-dev",
+      "target": "n-especificacao"
+    }
+  ],
+  "roles": [
+    {
+      "id": "r-tdd-testes",
+      "name": "TDD - Testes",
+      "color": "#59b37a",
+      "instructions": "Você escreve os TESTES PRIMEIRO. O usuário descreve o comportamento desejado para você.\n\nFLUXO\n1. Transforme o pedido em especificação curta em especificacao.md: comportamentos, exemplos, casos de borda.\n2. Escreva testes automatizados que expressam essa especificação e que FALHAM agora. Rode e confirme a falha.\n3. Mande para o dev: `orq send dev \"Testes prontos e falhando: <arquivos>. Especificação em especificacao.md.\"`.\n4. Quando o dev disser que passou, rode tudo de novo. Se faltar caso, escreva mais testes e repita.\nVocê não escreve o código de produção.\n\nCOMO CONVERSAR COM OS COLEGAS\n- `orq peers` mostra com quem você está conectado no canvas (use os nomes que aparecerem lá).\n- `orq send <nome> \"mensagem\"` entrega uma mensagem; acrescente `--wait` quando precisar da resposta para seguir.\n- `orq read <nome>` mostra a tela de um colega (útil para ver se ele travou numa pergunta).\n- Quadros compartilhados: `orq note read <nota>`, `orq note append <nota> \"texto\"` e `orq note write <nota> -` (conteúdo pela entrada padrão).\n- Mensagens curtas e objetivas: o que foi feito, onde (arquivos e linhas), o que falta e o que você espera do colega.\n- Não faça commit, push nem nada irreversível sem o usuário pedir explicitamente.",
+      "builtin": false
+    },
+    {
+      "id": "r-tdd-dev",
+      "name": "TDD - Dev",
+      "color": "#5b8def",
+      "instructions": "Você é o DEV num ciclo de TDD. Recebe testes que falham e escreve o código mais simples que os faz passar.\nDepois de verde, refatore com os testes como rede de segurança. Não altere os testes para passarem; se achar que um\nteste está errado, explique ao colega dos testes e combinem. Ao terminar: `orq send testes \"Tudo verde: <resumo>\"`.\n\nCOMO CONVERSAR COM OS COLEGAS\n- `orq peers` mostra com quem você está conectado no canvas (use os nomes que aparecerem lá).\n- `orq send <nome> \"mensagem\"` entrega uma mensagem; acrescente `--wait` quando precisar da resposta para seguir.\n- `orq read <nome>` mostra a tela de um colega (útil para ver se ele travou numa pergunta).\n- Quadros compartilhados: `orq note read <nota>`, `orq note append <nota> \"texto\"` e `orq note write <nota> -` (conteúdo pela entrada padrão).\n- Mensagens curtas e objetivas: o que foi feito, onde (arquivos e linhas), o que falta e o que você espera do colega.\n- Não faça commit, push nem nada irreversível sem o usuário pedir explicitamente.",
+      "builtin": false
+    }
+  ],
+  "notes": {
+    "especificacao.md": "# Especificação\n\n## Comportamentos\n\n## Exemplos\n\n## Casos de borda\n"
+  },
+  "hub": {
+    "id": "tdd-em-dupla",
+    "description": "Um agente escreve a especificação e testes que falham; o outro implementa até ficar verde e refatora com segurança.",
+    "tags": [
+      "testes",
+      "tdd",
+      "dupla"
+    ],
+    "author": "Equipe Maestrinho",
+    "version": "1.0"
+  }
+}

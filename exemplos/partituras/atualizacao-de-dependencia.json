@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "name": "Atualização de dependência ou framework",
+  "createdAt": "2026-10-07T12:00:00.000Z",
+  "nodes": [
+    {
+      "id": "s-titulo",
+      "kind": "shape",
+      "shape": "text",
+      "text": "Migração: planejador estuda o changelog e planeja (migracao.md) → executor aplica etapa a etapa → validador confere cada etapa",
+      "color": "",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "w": 1920,
+        "h": 60
+      }
+    },
+    {
+      "id": "t-planejador",
+      "kind": "terminal",
+      "name": "planejador",
+      "presetId": "claude",
+      "roleId": "r-mig-planejador",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 0,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "t-executor",
+      "kind": "terminal",
+      "name": "executor",
+      "presetId": "claude",
+      "roleId": "r-mig-executor",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 660,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "t-validador",
+      "kind": "terminal",
+      "name": "validador",
+      "presetId": "codex",
+      "roleId": "r-mig-validador",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 1320,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "n-migracao",
+      "kind": "note",
+      "file": "migracao.md",
+      "position": {
+        "x": 160,
+        "y": 580
+      },
+      "size": {
+        "w": 560,
+        "h": 440
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-planejador-executor",
+      "source": "t-planejador",
+      "target": "t-executor"
+    },
+    {
+      "id": "e-executor-validador",
+      "source": "t-executor",
+      "target": "t-validador"
+    },
+    {
+      "id": "e-planejador-migracao",
+      "source": "t-planejador",
+      "target": "n-migracao"
+    },
+    {
+      "id": "e-executor-migracao",
+      "source": "t-executor",
+      "target": "n-migracao"
+    },
+    {
+      "id": "e-validador-migracao",
+      "source": "t-validador",
+      "target": "n-migracao"
+    }
+  ],
+  "roles": [
+    {
+      "id": "r-mig-planejador",
+      "name": "Migração - Planejador",
+      "color": "#b48ead",
+      "instructions": "Você PLANEJA a atualização (biblioteca, framework, runtime). Leia o changelog e o guia de migração da versão alvo,\nliste as quebras que afetam este projeto (com os arquivos atingidos) e escreva em migracao.md um plano em etapas,\ncom como voltar atrás em cada uma. Entregue ao executor.\n\nCOMO CONVERSAR COM OS COLEGAS\n- `orq peers` mostra com quem você está conectado no canvas (use os nomes que aparecerem lá).\n- `orq send <nome> \"mensagem\"` entrega uma mensagem; acrescente `--wait` quando precisar da resposta para seguir.\n- `orq read <nome>` mostra a tela de um colega (útil para ver se ele travou numa pergunta).\n- Quadros compartilhados: `orq note read <nota>`, `orq note append <nota> \"texto\"` e `orq note write <nota> -` (conteúdo pela entrada padrão).\n- Mensagens curtas e objetivas: o que foi feito, onde (arquivos e linhas), o que falta e o que você espera do colega.\n- Não faça commit, push nem nada irreversível sem o usuário pedir explicitamente.",
+      "builtin": false
+    },
+    {
+      "id": "r-mig-executor",
+      "name": "Migração - Executor",
+      "color": "#5b8def",
+      "instructions": "Você EXECUTA a migração seguindo migracao.md, uma etapa por vez, mantendo o projeto compilando. Ao fim de cada etapa\npeça a validação: `orq send validador \"Etapa N feita: ...\"`. Não pule etapas nem misture mudanças não relacionadas.\n\nCOMO CONVERSAR COM OS COLEGAS\n- `orq peers` mostra com quem você está conectado no canvas (use os nomes que aparecerem lá).\n- `orq send <nome> \"mensagem\"` entrega uma mensagem; acrescente `--wait` quando precisar da resposta para seguir.\n- `orq read <nome>` mostra a tela de um colega (útil para ver se ele travou numa pergunta).\n- Quadros compartilhados: `orq note read <nota>`, `orq note append <nota> \"texto\"` e `orq note write <nota> -` (conteúdo pela entrada padrão).\n- Mensagens curtas e objetivas: o que foi feito, onde (arquivos e linhas), o que falta e o que você espera do colega.\n- Não faça commit, push nem nada irreversível sem o usuário pedir explicitamente.",
+      "builtin": false
+    },
+    {
+      "id": "r-mig-validador",
+      "name": "Migração - Validador",
+      "color": "#59b37a",
+      "instructions": "Você VALIDA cada etapa da migração: instala do zero, roda build, testes, lint e o app (se possível), procura avisos de\ndepreciação novos. Registre em migracao.md e responda ao executor com \"ok\" ou o problema e o comando que o mostra.\n\nCOMO CONVERSAR COM OS COLEGAS\n- `orq peers` mostra com quem você está conectado no canvas (use os nomes que aparecerem lá).\n- `orq send <nome> \"mensagem\"` entrega uma mensagem; acrescente `--wait` quando precisar da resposta para seguir.\n- `orq read <nome>` mostra a tela de um colega (útil para ver se ele travou numa pergunta).\n- Quadros compartilhados: `orq note read <nota>`, `orq note append <nota> \"texto\"` e `orq note write <nota> -` (conteúdo pela entrada padrão).\n- Mensagens curtas e objetivas: o que foi feito, onde (arquivos e linhas), o que falta e o que você espera do colega.\n- Não faça commit, push nem nada irreversível sem o usuário pedir explicitamente.",
+      "builtin": false
+    }
+  ],
+  "notes": {
+    "migracao.md": "# Migração\n\n## Versão atual → alvo\n\n## Quebras que nos afetam\n\n## Etapas\n\n- [ ] 1.\n\n## Como voltar atrás\n\n## Andamento\n"
+  },
+  "hub": {
+    "id": "atualizacao-de-dependencia",
+    "description": "Planejador estuda o changelog e monta etapas reversíveis, executor aplica uma por vez e validador instala do zero e roda tudo a cada etapa.",
+    "tags": [
+      "migração",
+      "dependências",
+      "manutenção"
+    ],
+    "author": "Equipe Maestrinho",
+    "version": "1.0"
+  }
+}

@@ -1,0 +1,22 @@
+› Rode o comando git init nesta pasta. O sandbox vai bloquear: peça a mi…
+• Vou inicializar um repositório Git nesta pasta; isso cria apenas a pasta
+  oculta .git.
+
+• Running git init
+
+
+  Would you like to run the following command?
+
+  Environment: local
+
+  Reason: Você autoriza executar `git init` fora do sandbox para
+  inicializar o repositório nesta pasta?
+
+  $ git init
+
+
+› 1. Yes, proceed (y)
+  2. Yes, and don't ask again for commands that start with `git init` (p)
+  3. No, and tell Codex what to do differently (esc)
+
+  Press enter to confirm or esc to cancel

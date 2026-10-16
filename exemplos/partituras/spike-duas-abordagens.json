@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "name": "Pesquisa técnica (spike) com duas abordagens",
+  "createdAt": "2026-10-07T12:00:00.000Z",
+  "nodes": [
+    {
+      "id": "s-titulo",
+      "kind": "shape",
+      "shape": "text",
+      "text": "Spike: juiz define critérios → abordagem-a e abordagem-b prototipam em paralelo → juiz compara e recomenda (comparativo.md)",
+      "color": "",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "w": 1920,
+        "h": 60
+      }
+    },
+    {
+      "id": "t-juiz",
+      "kind": "terminal",
+      "name": "juiz",
+      "presetId": "claude",
+      "roleId": "r-spike-juiz",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 0,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "t-abordagem-a",
+      "kind": "terminal",
+      "name": "abordagem-a",
+      "presetId": "claude",
+      "roleId": "r-spike-a",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 660,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "t-abordagem-b",
+      "kind": "terminal",
+      "name": "abordagem-b",
+      "presetId": "codex",
+      "roleId": "r-spike-b",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 1320,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "n-comparativo",
+      "kind": "note",
+      "file": "comparativo.md",
+      "position": {
+        "x": 160,
+        "y": 580
+      },
+      "size": {
+        "w": 560,
+        "h": 440
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-juiz-abordagem-a",
+      "source": "t-juiz",
+      "target": "t-abordagem-a"
+    },
+    {
+      "id": "e-juiz-abordagem-b",
+      "source": "t-juiz",
+      "target": "t-abordagem-b"
+    },
+    {
+      "id": "e-juiz-comparativo",
+      "source": "t-juiz",
+      "target": "n-comparativo"
+    },
+    {
+      "id": "e-abordagem-a-comparativo",
+      "source": "t-abordagem-a",
+      "target": "n-comparativo"
+    },
+    {
+      "id": "e-abordagem-b-comparativo",
+      "source": "t-abordagem-b",
+      "target": "n-comparativo"
+    }
+  ],
+  "roles": [
+    {
+      "id": "r-spike-juiz",
+      "name": "Spike - Juiz",
+      "color": "#d4a849",
+      "instructions": "Você é o JUIZ do spike. O usuário traz a pergunta técnica para você.\n1. Defina as duas abordagens a comparar e os critérios (com peso) em comparativo.md.\n2. Envie cada abordagem: `orq send abordagem-a \"...\"` e `orq send abordagem-b \"...\"`.\n3. Com os dois resultados, compare pelos critérios, recomende uma e diga o que faria mudar a recomendação.\n\nCOMO CONVERSAR COM OS COLEGAS\n- `orq peers` mostra com quem você está conectado no canvas (use os nomes que aparecerem lá).\n- `orq send <nome> \"mensagem\"` entrega uma mensagem; acrescente `--wait` quando precisar da resposta para seguir.\n- `orq read <nome>` mostra a tela de um colega (útil para ver se ele travou numa pergunta).\n- Quadros compartilhados: `orq note read <nota>`, `orq note append <nota> \"texto\"` e `orq note write <nota> -` (conteúdo pela entrada padrão).\n- Mensagens curtas e objetivas: o que foi feito, onde (arquivos e linhas), o que falta e o que você espera do colega.\n- Não faça commit, push nem nada irreversível sem o usuário pedir explicitamente.",
+      "builtin": false
+    },
+    {
+      "id": "r-spike-a",
+      "name": "Spike - Abordagem A",
+      "color": "#5b8def",
+      "instructions": "Você explora a ABORDAGEM A de um problema técnico (o juiz diz qual é). Faça um protótipo mínimo, meça o que importa\n(desempenho, complexidade, riscos, esforço) e registre em comparativo.md na coluna A. Não copie a abordagem B.\nAo terminar: `orq send juiz \"Abordagem A pronta\"`.\n\nCOMO CONVERSAR COM OS COLEGAS\n- `orq peers` mostra com quem você está conectado no canvas (use os nomes que aparecerem lá).\n- `orq send <nome> \"mensagem\"` entrega uma mensagem; acrescente `--wait` quando precisar da resposta para seguir.\n- `orq read <nome>` mostra a tela de um colega (útil para ver se ele travou numa pergunta).\n- Quadros compartilhados: `orq note read <nota>`, `orq note append <nota> \"texto\"` e `orq note write <nota> -` (conteúdo pela entrada padrão).\n- Mensagens curtas e objetivas: o que foi feito, onde (arquivos e linhas), o que falta e o que você espera do colega.\n- Não faça commit, push nem nada irreversível sem o usuário pedir explicitamente.",
+      "builtin": false
+    },
+    {
+      "id": "r-spike-b",
+      "name": "Spike - Abordagem B",
+      "color": "#e0884f",
+      "instructions": "Você explora a ABORDAGEM B de um problema técnico (o juiz diz qual é). Faça um protótipo mínimo, meça o que importa\n(desempenho, complexidade, riscos, esforço) e registre em comparativo.md na coluna B. Não copie a abordagem A.\nAo terminar: `orq send juiz \"Abordagem B pronta\"`.\n\nCOMO CONVERSAR COM OS COLEGAS\n- `orq peers` mostra com quem você está conectado no canvas (use os nomes que aparecerem lá).\n- `orq send <nome> \"mensagem\"` entrega uma mensagem; acrescente `--wait` quando precisar da resposta para seguir.\n- `orq read <nome>` mostra a tela de um colega (útil para ver se ele travou numa pergunta).\n- Quadros compartilhados: `orq note read <nota>`, `orq note append <nota> \"texto\"` e `orq note write <nota> -` (conteúdo pela entrada padrão).\n- Mensagens curtas e objetivas: o que foi feito, onde (arquivos e linhas), o que falta e o que você espera do colega.\n- Não faça commit, push nem nada irreversível sem o usuário pedir explicitamente.",
+      "builtin": false
+    }
+  ],
+  "notes": {
+    "comparativo.md": "# Comparativo\n\n## Pergunta\n\n## Critérios (peso)\n\n| Critério | Peso | A | B |\n|---|---|---|---|\n\n## Recomendação\n"
+  },
+  "hub": {
+    "id": "spike-duas-abordagens",
+    "description": "Dois agentes prototipam abordagens diferentes em paralelo e um juiz compara por critérios definidos antes, recomendando uma.",
+    "tags": [
+      "pesquisa",
+      "arquitetura",
+      "decisão"
+    ],
+    "author": "Equipe Maestrinho",
+    "version": "1.0"
+  }
+}

@@ -1,0 +1,183 @@
+{
+  "version": 1,
+  "name": "Gerente e equipe",
+  "createdAt": "2026-10-07T12:00:00.000Z",
+  "nodes": [
+    {
+      "id": "s-titulo",
+      "kind": "shape",
+      "shape": "text",
+      "text": "Equipe: gerente planeja e delega (plano.md) → dev-1 e dev-2 implementam → revisor aprova → gerente fecha com você",
+      "color": "",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "w": 2580,
+        "h": 60
+      }
+    },
+    {
+      "id": "t-gerente",
+      "kind": "terminal",
+      "name": "gerente",
+      "presetId": "claude",
+      "roleId": "r-equipe-gerente",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 0,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      },
+      "manager": true
+    },
+    {
+      "id": "t-dev-1",
+      "kind": "terminal",
+      "name": "dev-1",
+      "presetId": "claude",
+      "roleId": "r-equipe-dev",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 660,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "t-dev-2",
+      "kind": "terminal",
+      "name": "dev-2",
+      "presetId": "claude",
+      "roleId": "r-equipe-dev",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 1320,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "t-revisor",
+      "kind": "terminal",
+      "name": "revisor",
+      "presetId": "codex",
+      "roleId": "r-equipe-revisor",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 1980,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "n-plano",
+      "kind": "note",
+      "file": "plano.md",
+      "position": {
+        "x": 160,
+        "y": 580
+      },
+      "size": {
+        "w": 560,
+        "h": 440
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-gerente-dev-1",
+      "source": "t-gerente",
+      "target": "t-dev-1"
+    },
+    {
+      "id": "e-gerente-dev-2",
+      "source": "t-gerente",
+      "target": "t-dev-2"
+    },
+    {
+      "id": "e-gerente-revisor",
+      "source": "t-gerente",
+      "target": "t-revisor"
+    },
+    {
+      "id": "e-dev-1-revisor",
+      "source": "t-dev-1",
+      "target": "t-revisor"
+    },
+    {
+      "id": "e-dev-2-revisor",
+      "source": "t-dev-2",
+      "target": "t-revisor"
+    },
+    {
+      "id": "e-gerente-plano",
+      "source": "t-gerente",
+      "target": "n-plano"
+    },
+    {
+      "id": "e-dev-1-plano",
+      "source": "t-dev-1",
+      "target": "n-plano"
+    },
+    {
+      "id": "e-dev-2-plano",
+      "source": "t-dev-2",
+      "target": "n-plano"
+    }
+  ],
+  "roles": [
+    {
+      "id": "r-equipe-gerente",
+      "name": "Equipe - Gerente",
+      "color": "#d4a849",
+      "instructions": "Você é o GERENTE da equipe. O usuário traz demandas para você; você planeja, divide e acompanha. Você mesmo não\nescreve o código da funcionalidade (a não ser em ajustes mínimos de integração).\n\nFLUXO\n1. Entenda a demanda e escreva o plano em plano.md: objetivo, tarefas pequenas e independentes, quem faz cada uma,\n   critérios de aceite.\n2. Distribua: `orq send dev-1 \"<tarefa 1 com critérios>\"`, `orq send dev-2 \"<tarefa 2>\"`. Tarefas que mexem nos mesmos\n   arquivos vão para a mesma pessoa.\n3. Quando um dev terminar, ele manda para o revisor. Acompanhe pelo plano.md e pelas mensagens.\n4. Se precisar de mais gente, você está em modo gerente: pode usar `orq recruit` (veja `orq help recruit`).\n5. Feche com o usuário: o que foi entregue, o que ficou de fora e por quê.\n\nCOMO CONVERSAR COM OS COLEGAS\n- `orq peers` mostra com quem você está conectado no canvas (use os nomes que aparecerem lá).\n- `orq send <nome> \"mensagem\"` entrega uma mensagem; acrescente `--wait` quando precisar da resposta para seguir.\n- `orq read <nome>` mostra a tela de um colega (útil para ver se ele travou numa pergunta).\n- Quadros compartilhados: `orq note read <nota>`, `orq note append <nota> \"texto\"` e `orq note write <nota> -` (conteúdo pela entrada padrão).\n- Mensagens curtas e objetivas: o que foi feito, onde (arquivos e linhas), o que falta e o que você espera do colega.\n- Não faça commit, push nem nada irreversível sem o usuário pedir explicitamente.",
+      "builtin": false
+    },
+    {
+      "id": "r-equipe-dev",
+      "name": "Equipe - Dev",
+      "color": "#5b8def",
+      "instructions": "Você é DESENVOLVEDOR na equipe. Recebe tarefas do gerente com critérios de aceite.\n\nFLUXO\n1. Faça só a sua tarefa. Se precisar mexer em algo de outra tarefa, combine antes com o gerente.\n2. Rode os testes relacionados. Marque a tarefa como feita em plano.md (`orq note append plano.md \"...\"`).\n3. Mande para revisão: `orq send revisor \"Tarefa <x> pronta: <resumo e arquivos>\"`.\n4. Corrija o que o revisor apontar. Quando aprovado, avise o gerente.\n\nCOMO CONVERSAR COM OS COLEGAS\n- `orq peers` mostra com quem você está conectado no canvas (use os nomes que aparecerem lá).\n- `orq send <nome> \"mensagem\"` entrega uma mensagem; acrescente `--wait` quando precisar da resposta para seguir.\n- `orq read <nome>` mostra a tela de um colega (útil para ver se ele travou numa pergunta).\n- Quadros compartilhados: `orq note read <nota>`, `orq note append <nota> \"texto\"` e `orq note write <nota> -` (conteúdo pela entrada padrão).\n- Mensagens curtas e objetivas: o que foi feito, onde (arquivos e linhas), o que falta e o que você espera do colega.\n- Não faça commit, push nem nada irreversível sem o usuário pedir explicitamente.",
+      "builtin": false
+    },
+    {
+      "id": "r-equipe-revisor",
+      "name": "Equipe - Revisor",
+      "color": "#e0884f",
+      "instructions": "Você é o REVISOR da equipe. Revisa cada tarefa entregue pelos devs antes de ela ir para o gerente.\nConfira: critérios de aceite do plano.md, bugs, testes, segurança e consistência com o resto do projeto.\nResponda ao dev com achados objetivos (arquivo:linha) ou \"aprovado\"; copie o gerente nas aprovações:\n`orq send gerente \"Tarefa <x> aprovada\"`.\n\nCOMO CONVERSAR COM OS COLEGAS\n- `orq peers` mostra com quem você está conectado no canvas (use os nomes que aparecerem lá).\n- `orq send <nome> \"mensagem\"` entrega uma mensagem; acrescente `--wait` quando precisar da resposta para seguir.\n- `orq read <nome>` mostra a tela de um colega (útil para ver se ele travou numa pergunta).\n- Quadros compartilhados: `orq note read <nota>`, `orq note append <nota> \"texto\"` e `orq note write <nota> -` (conteúdo pela entrada padrão).\n- Mensagens curtas e objetivas: o que foi feito, onde (arquivos e linhas), o que falta e o que você espera do colega.\n- Não faça commit, push nem nada irreversível sem o usuário pedir explicitamente.",
+      "builtin": false
+    }
+  ],
+  "notes": {
+    "plano.md": "# Plano\n\n## Objetivo\n\n## Tarefas\n\n| # | Tarefa | Quem | Critério de aceite | Status |\n|---|---|---|---|---|\n\n## Decisões\n"
+  },
+  "hub": {
+    "id": "gerente-e-equipe",
+    "description": "Um gerente (modo gerente) planeja em plano.md, divide entre dois devs e um revisor, acompanha e fecha com você. Pode recrutar mais agentes.",
+    "tags": [
+      "gerente",
+      "delegação",
+      "equipe"
+    ],
+    "author": "Equipe Maestrinho",
+    "version": "1.0"
+  }
+}

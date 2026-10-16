@@ -1,0 +1,40 @@
+ Plano: criar arquivo vazio vazio.txt
+
+ Contexto
+
+ Criar um arquivo de texto vazio chamado vazio.txt no di
+retório de trabalho
+ (C:\projeto
+e-SC0PKk).
+
+ Passos
+
+ 1. Verificar se vazio.txt já existe no diretório, para
+não sobrescrever nada.
+ 2. Criar o arquivo vazio (PowerShell): New-Item -ItemTy
+pe File -Path vazio.txt
+ Criar um arquivo de texto vazio chamado vazio.txt no
+ diretório de trabalho (C:\projeto
+ al\Temp\perguntas-claude-SC0PKk).
+
+ Passos
+
+ 1. Verificar se vazio.txt já existe no diretório, para
+    não sobrescrever nada.
+ 2. Criar o arquivo vazio (PowerShell): New-Item
+    -ItemType File -Path vazio.txt
+ 3. Confirmar a criação e que o tamanho é 0 bytes:
+    Get-Item vazio.txt | Select-Object Name, Length
+╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌╌
+
+────────────────────────────────────────────────────────
+ Claude has written up a plan and is ready to execute.
+ Would you like to proceed?
+
+ ❯ 1. Yes, and use auto mode
+   2. Yes, manually approve edits
+   3. Tell Claude what to change
+      shift+tab to approve with this feedback
+
+ ctrl+g to edit in Notepad · ~\.claude\plans\planeje-em
+ -3-passos-quizzical-spindle.md

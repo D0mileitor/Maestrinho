@@ -1,0 +1,529 @@
+/* ================================================================== notas (nó + diálogo) */
+
+.kind-note {
+  --note-mono: 'Cascadia Mono', 'Cascadia Code', Consolas, 'DejaVu Sans Mono', monospace;
+}
+
+/* ------------------------------------------------------------------ cabeçalho */
+
+.note-title {
+  display: inline-flex;
+  min-width: 0;
+  cursor: inherit;
+}
+.note-title-folder {
+  flex: none;
+  color: var(--text-3);
+  font-weight: 500;
+}
+.note-title-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.note-save {
+  flex: none;
+  font-size: calc(11.5px * var(--font-scale, 1));
+  color: var(--busy);
+  white-space: nowrap;
+}
+.note-save.error {
+  color: var(--danger);
+}
+.note-mode {
+  display: inline-flex;
+  flex: none;
+  gap: 1px;
+  padding: 2px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+}
+.note-mode-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 20px;
+  padding: 0 7px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--text-3);
+  font-family: var(--font-condensed);
+  font-size: calc(12px * var(--font-scale, 1));
+  cursor: pointer;
+}
+.note-mode-btn:hover {
+  background: var(--surface-3);
+  color: var(--text);
+}
+.note-mode-btn.active {
+  background: var(--brass-soft);
+  color: var(--brass);
+}
+.note-compact .note-mode-btn {
+  padding: 0 5px;
+}
+.note-compact .note-mode-btn span {
+  display: none;
+}
+
+/* ------------------------------------------------------------------ corpo */
+
+.note-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: var(--surface);
+}
+.note-scroll {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  cursor: auto;
+  user-select: text;
+}
+.note-scroll::-webkit-scrollbar,
+.note-editor::-webkit-scrollbar,
+.note-md pre::-webkit-scrollbar,
+.note-md table::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+.note-scroll::-webkit-scrollbar-thumb,
+.note-editor::-webkit-scrollbar-thumb,
+.note-md pre::-webkit-scrollbar-thumb,
+.note-md table::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--text-3) 45%, transparent);
+}
+.note-scroll::-webkit-scrollbar-corner,
+.note-editor::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.note-empty {
+  display: grid;
+  place-content: center;
+  gap: 2px;
+  min-height: 100%;
+  padding: 16px;
+  color: var(--text-3);
+  text-align: center;
+  cursor: text;
+}
+
+.note-state {
+  flex: 1;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 8px;
+  padding: 16px;
+  color: var(--text-2);
+  text-align: center;
+}
+.note-state strong {
+  color: var(--text);
+  font-weight: 600;
+}
+.note-state p {
+  max-width: 44ch;
+  margin: 0;
+  color: var(--text-3);
+  font-size: calc(12.5px * var(--font-scale, 1));
+  overflow-wrap: anywhere;
+}
+.note-state .note-state-error {
+  color: var(--danger);
+}
+
+.note-editor {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  margin: 0;
+  padding: 12px 16px 18px;
+  border: 0;
+  outline: none;
+  resize: none;
+  background: var(--term-bg);
+  color: var(--text);
+  caret-color: var(--brass);
+  font-family: var(--note-mono);
+  font-size: calc(12.5px * var(--font-scale, 1));
+  line-height: 1.6;
+  tab-size: 2;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  user-select: text;
+  cursor: text;
+}
+.note-editor:focus-visible {
+  outline: none;
+}
+.note-editor::placeholder {
+  color: var(--text-3);
+}
+.note-editor::selection {
+  background: color-mix(in srgb, var(--brass) 32%, transparent);
+}
+
+.note-foot {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  height: 22px;
+  padding: 0 10px;
+  overflow: hidden;
+  border-top: 1px solid var(--line);
+  border-radius: 0 0 var(--radius-node) var(--radius-node);
+  background: var(--surface-2);
+  color: var(--text-3);
+  font-size: calc(11px * var(--font-scale, 1));
+  white-space: nowrap;
+}
+.note-foot > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.note-foot .note-foot-error {
+  color: var(--danger);
+}
+
+.note-banner {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  padding: 7px 10px;
+  border-bottom: 1px solid color-mix(in srgb, var(--busy) 45%, var(--line));
+  background: color-mix(in srgb, var(--busy) 13%, var(--surface));
+  color: var(--text);
+  font-size: calc(12.5px * var(--font-scale, 1));
+}
+.note-banner.removed {
+  border-bottom-color: color-mix(in srgb, var(--danger) 45%, var(--line));
+  background: color-mix(in srgb, var(--danger) 11%, var(--surface));
+}
+.note-banner-text {
+  flex: 1;
+  min-width: 150px;
+  display: grid;
+  gap: 1px;
+}
+.note-banner-text strong {
+  font-weight: 600;
+}
+.note-banner-text span {
+  color: var(--text-2);
+  font-size: calc(12px * var(--font-scale, 1));
+}
+.note-banner .btn {
+  height: 24px;
+  padding: 0 9px;
+  font-size: calc(12px * var(--font-scale, 1));
+}
+
+.note-lowzoom {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  padding: 12px;
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  color: var(--text-2);
+  font-family: var(--font-condensed);
+  font-size: calc(48px * var(--font-scale, 1));
+  font-weight: 600;
+  text-align: center;
+  overflow-wrap: anywhere;
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------------ Markdown renderizado */
+
+.note-md {
+  max-width: 78ch;
+  margin: 0 auto;
+  padding: 12px 16px 20px;
+  color: var(--text);
+  font-size: calc(13.5px * var(--font-scale, 1));
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.note-md > :first-child {
+  margin-top: 0;
+}
+.note-md > :last-child {
+  margin-bottom: 0;
+}
+.note-md ::selection {
+  background: color-mix(in srgb, var(--brass) 32%, transparent);
+}
+.note-md h1,
+.note-md h2,
+.note-md h3,
+.note-md h4,
+.note-md h5,
+.note-md h6 {
+  margin: 1.25em 0 0.5em;
+  color: var(--text);
+  font-family: var(--font-condensed);
+  font-weight: 600;
+  line-height: 1.25;
+}
+.note-md h1 {
+  padding-bottom: 0.25em;
+  border-bottom: 1px solid var(--line);
+  font-size: 1.6em;
+}
+.note-md h2 {
+  padding-bottom: 0.2em;
+  border-bottom: 1px solid var(--line);
+  font-size: 1.32em;
+}
+.note-md h3 {
+  font-size: 1.14em;
+}
+.note-md h4 {
+  font-size: 1em;
+}
+.note-md h5,
+.note-md h6 {
+  color: var(--text-2);
+  font-size: 0.86em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.note-md p {
+  margin: 0 0 0.75em;
+}
+.note-md a {
+  color: var(--steel);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--steel) 55%, transparent);
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.note-md a:hover {
+  color: var(--brass);
+  text-decoration-color: currentColor;
+}
+.note-md strong {
+  color: var(--text);
+  font-weight: 600;
+}
+.note-md del {
+  color: var(--text-3);
+}
+.note-md ul,
+.note-md ol {
+  margin: 0 0 0.75em;
+  padding-left: 1.5em;
+}
+.note-md li {
+  margin: 0.15em 0;
+}
+.note-md li > ul,
+.note-md li > ol {
+  margin-bottom: 0.2em;
+}
+.note-md li::marker {
+  color: var(--text-3);
+}
+.note-md ul.contains-task-list {
+  padding-left: 0.2em;
+  list-style: none;
+}
+.note-md li > ul.contains-task-list {
+  padding-left: 1.4em;
+}
+.note-md li.task-list-item {
+  position: relative;
+  padding-left: 1.65em;
+}
+.note-md .note-task {
+  position: absolute;
+  left: 0;
+  top: 0.32em;
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  accent-color: var(--brass);
+  cursor: pointer;
+}
+.note-md li.task-list-item:has(> .note-task:checked),
+.note-md li.task-list-item:has(> p > .note-task:checked) {
+  color: var(--text-3);
+}
+.note-md blockquote {
+  margin: 0 0 0.75em;
+  padding: 0.25em 0 0.25em 1em;
+  border-left: 3px solid var(--brass);
+  color: var(--text-2);
+}
+.note-md blockquote > :last-child {
+  margin-bottom: 0;
+}
+.note-md code {
+  padding: 0.12em 0.38em;
+  border-radius: 4px;
+  background: var(--surface-3);
+  color: var(--text);
+  font-family: var(--note-mono);
+  font-size: 0.88em;
+}
+.note-md pre {
+  margin: 0 0 0.9em;
+  padding: 10px 12px;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--term-bg);
+  line-height: 1.45;
+}
+.note-md pre code {
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  font-size: calc(12.5px * var(--font-scale, 1));
+  white-space: pre;
+  overflow-wrap: normal;
+}
+.note-md table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  margin: 0 0 0.9em;
+  overflow: auto;
+  border-collapse: collapse;
+  font-size: 0.95em;
+}
+.note-md th,
+.note-md td {
+  padding: 5px 10px;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: normal;
+}
+.note-md th {
+  background: var(--surface-2);
+  font-weight: 600;
+}
+.note-md tbody tr:nth-child(2n) td {
+  background: color-mix(in srgb, var(--surface-2) 50%, transparent);
+}
+.note-md hr {
+  height: 0;
+  margin: 1.25em 0;
+  border: 0;
+  border-top: 1px solid var(--line-strong);
+}
+.note-md img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+.note-md .note-img-blocked {
+  display: inline-block;
+  padding: 0 6px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 4px;
+  color: var(--text-3);
+  font-size: 0.9em;
+}
+.note-md .note-img-blocked[data-href] {
+  cursor: pointer;
+}
+.note-md .footnotes {
+  margin-top: 1.5em;
+  padding-top: 0.5em;
+  border-top: 1px solid var(--line);
+  color: var(--text-2);
+  font-size: 0.9em;
+}
+.note-md .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ------------------------------------------------------------------ diálogo "Nova nota" */
+
+.note-pick {
+  margin-top: 4px;
+}
+.note-pick-title {
+  margin: 0 0 6px;
+  color: var(--text-2);
+  font-size: calc(12px * var(--font-scale, 1));
+}
+.note-pick-list {
+  display: grid;
+  gap: 2px;
+  max-height: 230px;
+  margin: 0;
+  padding: 4px;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--surface-2);
+  list-style: none;
+}
+.note-pick-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--text-2);
+  text-align: left;
+  cursor: pointer;
+}
+.note-pick-item:hover {
+  background: var(--surface-3);
+  color: var(--text);
+}
+.note-pick-item.selected {
+  background: var(--brass-soft);
+  color: var(--text);
+}
+.note-pick-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.note-pick-meta {
+  flex: none;
+  color: var(--text-3);
+  font-size: calc(11.5px * var(--font-scale, 1));
+}
+.note-pick-chip {
+  flex: none;
+  padding: 0 6px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  color: var(--text-3);
+  font-size: calc(11px * var(--font-scale, 1));
+  line-height: calc(16px * var(--font-scale, 1));
+}
+.note-pick-empty {
+  padding: 10px;
+  color: var(--text-3);
+}

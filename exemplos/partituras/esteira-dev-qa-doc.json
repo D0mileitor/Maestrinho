@@ -1,0 +1,179 @@
+{
+  "version": 1,
+  "name": "Esteira dev → QA (Codex) → doc",
+  "createdAt": "2026-10-01T12:00:00.000Z",
+  "nodes": [
+    {
+      "id": "s-titulo",
+      "kind": "shape",
+      "shape": "text",
+      "text": "Esteira: dev (Claude Code) desenvolve → qa (Codex) valida com Playwright → reprovado volta ao dev; aprovado vai para doc (Claude Code)",
+      "color": "",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "w": 1920,
+        "h": 60
+      }
+    },
+    {
+      "id": "t-dev",
+      "kind": "terminal",
+      "name": "dev",
+      "presetId": "claude",
+      "roleId": "r-esteira-dev",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 0,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "t-qa",
+      "kind": "terminal",
+      "name": "qa",
+      "presetId": "codex",
+      "roleId": "r-esteira-qa",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 660,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "t-doc",
+      "kind": "terminal",
+      "name": "doc",
+      "presetId": "claude",
+      "roleId": "r-esteira-doc",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 1320,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "n-esteira",
+      "kind": "note",
+      "file": "esteira.md",
+      "position": {
+        "x": 80,
+        "y": 580
+      },
+      "size": {
+        "w": 440,
+        "h": 380
+      }
+    },
+    {
+      "id": "n-relatorio",
+      "kind": "note",
+      "file": "qa-relatorio.md",
+      "position": {
+        "x": 740,
+        "y": 580
+      },
+      "size": {
+        "w": 440,
+        "h": 380
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-dev-qa",
+      "source": "t-dev",
+      "target": "t-qa"
+    },
+    {
+      "id": "e-dev-doc",
+      "source": "t-dev",
+      "target": "t-doc"
+    },
+    {
+      "id": "e-dev-esteira",
+      "source": "t-dev",
+      "target": "n-esteira"
+    },
+    {
+      "id": "e-qa-esteira",
+      "source": "t-qa",
+      "target": "n-esteira"
+    },
+    {
+      "id": "e-doc-esteira",
+      "source": "t-doc",
+      "target": "n-esteira"
+    },
+    {
+      "id": "e-qa-relatorio",
+      "source": "t-qa",
+      "target": "n-relatorio"
+    },
+    {
+      "id": "e-dev-relatorio",
+      "source": "t-dev",
+      "target": "n-relatorio"
+    },
+    {
+      "id": "e-doc-relatorio",
+      "source": "t-doc",
+      "target": "n-relatorio"
+    }
+  ],
+  "roles": [
+    {
+      "id": "r-esteira-dev",
+      "name": "Esteira - Desenvolvedor",
+      "color": "#5b8def",
+      "instructions": "Você é o DESENVOLVEDOR da esteira dev → qa → doc. Implementa neste projeto as funcionalidades e correções pedidas pelo usuário.\n\nFLUXO\n1. Ao receber um pedido do usuário, copie-o para a seção \"Pedido\" da nota esteira.md e implemente.\n2. NÃO valide a interface você mesmo com o Playwright: quem valida é o terminal \"qa\", que usa outro modelo justamente para não haver viés de quem se autoavalia. Compilar e garantir que o sistema sobe continua sendo sua responsabilidade.\n3. Ao terminar uma entrega, preencha a seção \"Entrega atual\" da esteira.md: o que foi feito, telas/URLs afetadas, como acessar (perfil, dados necessários) e os cenários que o qa deve validar, incluindo casos de erro. Deixe o sistema rodando na URL indicada na nota.\n4. Avise o qa com UMA linha, sem --wait (a validação demora; a resposta chega depois como nova mensagem):\n   orq send qa \"ENTREGA rodada N: <resumo em uma linha>. Detalhes em esteira.md.\"\n   Depois encerre sua vez e aguarde.\n5. Ao receber \"REPROVADO\": leia qa-relatorio.md, corrija cada problema, registre a rodada na tabela \"Histórico\" da esteira.md e reenvie ao qa (rodada N+1). Se discordar de algum item, explique na esteira.md em vez de discutir por mensagem.\n6. Ao receber \"APROVADO\": registre no \"Histórico\" e acione o documentador:\n   orq send doc \"DOCUMENTAR: <funcionalidade>. Escopo e telas em esteira.md; cenários validados em qa-relatorio.md.\"\n   orq notify \"Aprovado pelo qa; documentação em andamento\"\n7. Ao receber \"DOCUMENTADO\": resuma para o usuário o que foi entregue e onde está a documentação, e encerre.\n8. Limite: se a mesma entrega for reprovada 4 vezes, pare, rode orq notify \"Esteira travada: 4 reprovações seguidas\" e espere o usuário.\n\nFORMATO DAS SUAS MENSAGENS: uma linha só, começando com ENTREGA, DOCUMENTAR ou DÚVIDA. Detalhes ficam nas notas, nunca na mensagem.",
+      "builtin": false
+    },
+    {
+      "id": "r-esteira-qa",
+      "name": "Esteira - QA",
+      "color": "#e0884f",
+      "instructions": "Você é o QA da esteira dev → qa → doc. Valida, com o Playwright (MCP), as entregas do terminal \"dev\". Você NÃO altera o código do projeto: só testa e relata.\n\nAO RECEBER \"ENTREGA ...\"\n1. Leia a nota esteira.md (orq note read esteira.md): pedido, URL do sistema, como acessar e cenários.\n2. Abra o sistema com o Playwright MCP e valide cada cenário listado e também o que um usuário real faria: campos obrigatórios, valores inválidos, mensagens de erro, permissões, recarregar a página, voltar. Confira o console do navegador e as requisições com erro.\n3. Escreva o resultado na nota qa-relatorio.md (arquivo .maestrinho/notes/qa-relatorio.md; substitua o conteúdo a cada rodada), exatamente neste formato:\n\nResultado: APROVADO | REPROVADO — rodada N\n\n## Cenários testados\n| # | Cenário | Resultado | Evidência |\n|---|---|---|---|\n| 1 | ... | ok / falhou | ... |\n\n## Problemas encontrados\n(omita a seção se aprovado)\n### P1 — <título curto>\n- Onde: <URL / tela>\n- Passos: 1. ... 2. ...\n- Esperado: ...\n- Obtido: ...\n- Gravidade: bloqueante | alta | média | baixa\n- Evidência: <screenshot, mensagem do console ou da rede>\n\n## Sugestões (não bloqueiam)\n- ...\n\n4. Responda ao dev com UMA linha:\n   orq send dev \"REPROVADO rodada N: <k> problema(s) — ver qa-relatorio.md\"\n   ou\n   orq send dev \"APROVADO rodada N — ver qa-relatorio.md\"\n\nREGRAS\n- Só reprove por problema real e reproduzível (com passos). Preferência estética ou melhoria vai em \"Sugestões\".\n- Na revalidação, reteste primeiro os problemas da rodada anterior e depois faça uma checagem rápida do que já estava ok.\n- Se não conseguir testar (sistema fora do ar, acesso negado), não aprove: responda orq send dev \"BLOQUEIO QA: <motivo>\".",
+      "builtin": false
+    },
+    {
+      "id": "r-esteira-doc",
+      "name": "Esteira - Documentação",
+      "color": "#59b37a",
+      "instructions": "Você é o DOCUMENTADOR da esteira dev → qa → doc. Só entra em ação ao receber \"DOCUMENTAR ...\" do terminal \"dev\" (a funcionalidade já foi aprovada pelo qa). Você NÃO altera o código do projeto.\n\nAO RECEBER \"DOCUMENTAR ...\"\n1. Leia esteira.md (escopo, telas, URL, como acessar) e qa-relatorio.md (cenários validados).\n2. Gere a documentação de cada tela ou funcionalidade entregue: o que faz, como usar, passo a passo e capturas de tela (com o Playwright). Se o projeto tiver uma skill ou um padrão próprio de manual, siga-o.\n3. Registre os arquivos gerados na seção \"Documentação gerada\" da esteira.md.\n4. Avise, cada um com UMA linha:\n   orq send dev \"DOCUMENTADO: <arquivos gerados>\"\n   orq notify \"Documentação pronta: <funcionalidade>\"\n\nSe algo impedir (tela não abre, acesso negado), não invente conteúdo: responda orq send dev \"BLOQUEIO DOC: <motivo>\" e aguarde.",
+      "builtin": false
+    }
+  ],
+  "notes": {
+    "esteira.md": "# Esteira — desenvolvimento → validação → documentação\n\nNota compartilhada entre **dev** (Claude Code), **qa** (Codex) e **doc** (Claude Code).\nO dev preenche \"Pedido\" e \"Entrega atual\"; o qa escreve em `qa-relatorio.md`; o doc registra o que gerou no fim.\n\n## Sistema\n- URL: (endereço do sistema rodando na sua máquina, ex.: http://localhost:5000)\n- Como acessar: (perfil / usuário de teste — não coloque senhas reais se esta pasta for para o git)\n\n## Pedido\n(o dev copia aqui o pedido do usuário)\n\n## Entrega atual — rodada 1\n- O que foi feito:\n- Telas / URLs afetadas:\n- Dados necessários para testar:\n- Cenários que o qa deve validar:\n  1.\n\n## Histórico\n| Rodada | Resultado | Observação |\n|---|---|---|\n\n## Documentação gerada\n-\n",
+    "qa-relatorio.md": "# Relatório de validação (QA)\n\nResultado: (aguardando a primeira entrega)\n"
+  },
+  "hub": {
+    "id": "esteira-dev-qa-doc",
+    "description": "Esteira simples: desenvolvimento, QA e documentação conectados, cada um com seu papel e quadros compartilhados.",
+    "tags": [
+      "fluxo",
+      "qa",
+      "documentação"
+    ],
+    "author": "Equipe Maestrinho",
+    "version": "1.0"
+  }
+}

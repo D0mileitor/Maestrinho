@@ -1,0 +1,466 @@
+/* ================================================================== visão Escritório */
+
+.canvas-root[hidden] {
+  display: none !important;
+}
+.view-toggle {
+  display: inline-flex;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 2px 2px;
+}
+.view-toggle button {
+  font: inherit;
+  font-family: var(--font-condensed);
+  font-size: calc(12.5px * var(--font-scale, 1));
+  padding: 2px 10px;
+  border: 0;
+  background: transparent;
+  color: var(--text-2);
+  cursor: pointer;
+}
+.view-toggle button[aria-pressed='true'] {
+  background: var(--brass-soft);
+  color: var(--brass-strong);
+}
+.view-toggle button:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: -2px;
+}
+
+.office-root {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #0f131c;
+}
+.office-box {
+  position: relative;
+}
+.office-box canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+  cursor: pointer;
+}
+.office-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.office-tag {
+  position: absolute;
+  transform: translate(-50%, 0);
+  font-family: var(--font-condensed);
+  font-size: calc(clamp(10px, 1vw, 13px) * var(--font-scale, 1));
+  line-height: 1.25;
+  white-space: nowrap;
+  padding: 1px 7px;
+  border-radius: 4px;
+  background: rgba(12, 15, 24, 0.8);
+  color: #f4f1e8;
+  border-left: 3px solid var(--c);
+}
+.office-tag small {
+  color: #b9c0cf;
+}
+/* quantos ajudantes (estagiários) estão trabalhando para este agente */
+.office-tag .office-tag-helpers {
+  margin-left: 6px;
+  padding: 0 5px;
+  border-radius: 3px;
+  background: rgba(176, 86, 59, 0.85);
+  color: #fff4ea;
+}
+.office-tag.note {
+  transform: translate(-50%, -100%);
+  border-left-color: #8d8573;
+}
+.office-say {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  font-family: var(--font-condensed);
+  font-size: calc(clamp(10px, 1vw, 13px) * var(--font-scale, 1));
+  line-height: 1.2;
+  white-space: nowrap;
+  padding: 2px 7px;
+  border-radius: 5px;
+  background: #f4f1e8;
+  color: #1d2433;
+  border: 2px solid #1d2433;
+  box-shadow: 0 2px 0 #1d2433;
+}
+.office-say.ok {
+  background: #d8f3e3;
+}
+.office-say.bad {
+  background: #f9d6d2;
+}
+/* facadinha: TCHAC! em vermelho-sangue */
+.office-say.blood {
+  background: #b3121b;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  transform: translate(-50%, -100%) rotate(5deg);
+}
+/* onomatopeia da bronca (PAF!, POW!) em letra de gibi */
+.office-say.hit {
+  background: #ffe066;
+  color: #b3261e;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  transform: translate(-50%, -100%) rotate(-6deg);
+}
+.office-tip {
+  position: absolute;
+  transform: translate(-50%, 0);
+  max-width: 340px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: calc(12px * var(--font-scale, 1));
+  padding: 3px 8px;
+  border-radius: 5px;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+.office-foot {
+  position: absolute;
+  left: 12px;
+  bottom: 10px;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.office-hint {
+  font-size: calc(12px * var(--font-scale, 1));
+  color: #c9cfdb;
+  background: rgba(12, 15, 24, 0.72);
+  padding: 2px 8px;
+  border-radius: 4px;
+  pointer-events: none;
+}
+.office-empty {
+  max-width: 440px;
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+  text-align: center;
+  color: var(--text-2);
+}
+.office-menu {
+  position: absolute;
+  z-index: 20;
+  min-width: 180px;
+  padding: 4px;
+  display: grid;
+  gap: 1px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+.office-menu button {
+  font: inherit;
+  font-size: calc(13px * var(--font-scale, 1));
+  text-align: left;
+  padding: 6px 10px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+}
+.office-menu button:hover,
+.office-menu button:focus-visible {
+  background: var(--surface-2);
+  outline: none;
+}
+/* passo do menu "Interagir com…" (quem visitar, o que fazer) */
+.office-menu-title {
+  padding: 5px 10px 4px;
+  font-family: var(--font-condensed);
+  font-weight: 600;
+  font-size: calc(12px * var(--font-scale, 1));
+  color: var(--text-2);
+}
+.office-menu-sep {
+  height: 1px;
+  margin: 3px 4px;
+  background: var(--line);
+}
+
+/* ================================================================== editor de aparência */
+
+.look-editor {
+  display: grid;
+  grid-template-columns: minmax(0, 210px) minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+.look-preview {
+  display: grid;
+  gap: 9px;
+  justify-items: center;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--surface-2);
+}
+.look-stage {
+  width: 100%;
+  display: grid;
+  place-items: center;
+  padding: 8px 0 4px;
+  border-radius: 8px;
+  background: linear-gradient(#2c3652 0 62%, #4c3a2c 62% 66%, #6b5340 66%);
+}
+.look-stage canvas {
+  width: 160px;
+  height: 220px;
+  image-rendering: pixelated;
+}
+.look-views {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+}
+.look-views .btn {
+  font-size: calc(12px * var(--font-scale, 1));
+  padding: 2px 8px;
+}
+.look-views .btn[aria-pressed='true'] {
+  border-color: var(--brass);
+  color: var(--brass-strong);
+  background: var(--brass-soft);
+}
+.look-controls {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+.look-group {
+  display: grid;
+  gap: 6px;
+}
+.look-group > b {
+  font-size: calc(13px * var(--font-scale, 1));
+  font-weight: 600;
+}
+.look-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.look-sw {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border-radius: 6px;
+  border: 2px solid var(--line);
+  background: var(--c);
+  cursor: pointer;
+}
+.look-sw[aria-pressed='true'] {
+  border-color: var(--brass);
+  box-shadow: 0 0 0 2px var(--brass-soft);
+}
+.look-sw:focus-visible,
+.look-opt:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 2px;
+}
+.look-custom {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: calc(12px * var(--font-scale, 1));
+  color: var(--text-3);
+}
+.look-custom input {
+  width: 28px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: transparent;
+}
+.look-opt {
+  font: inherit;
+  font-size: calc(12.5px * var(--font-scale, 1));
+  padding: 2px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: transparent;
+  color: var(--text-2);
+  cursor: pointer;
+}
+.look-opt[aria-pressed='true'] {
+  border-color: var(--brass);
+  color: var(--brass-strong);
+  background: var(--brass-soft);
+}
+.dialog-tabs {
+  display: flex;
+  gap: 4px;
+  margin: -4px 0 12px;
+  border-bottom: 1px solid var(--line);
+}
+.dialog-tabs button {
+  font: inherit;
+  font-size: calc(13.5px * var(--font-scale, 1));
+  padding: 6px 12px;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  border-radius: 7px 7px 0 0;
+  background: transparent;
+  color: var(--text-2);
+  cursor: pointer;
+  margin-bottom: -1px;
+}
+.dialog-tabs button[aria-selected='true'] {
+  background: var(--surface);
+  border-color: var(--line);
+  color: var(--text);
+  font-weight: 600;
+}
+@media (max-width: 720px) {
+  .look-editor {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ================================================================== cenários */
+
+.office-scenes {
+  position: relative;
+}
+.office-scene-btn {
+  font: inherit;
+  font-family: var(--font-condensed);
+  font-size: calc(12.5px * var(--font-scale, 1));
+  color: #f4f1e8;
+  background: rgba(12, 15, 24, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  padding: 3px 10px;
+  cursor: pointer;
+}
+.office-scene-btn:hover,
+.office-scene-btn:focus-visible {
+  border-color: var(--brass);
+  outline: none;
+}
+.office-scene-menu {
+  bottom: calc(100% + 4px);
+  left: 0;
+}
+.office-scene-menu button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.office-scene-menu button[aria-checked='true'] {
+  color: var(--brass-strong);
+  font-weight: 600;
+}
+.office-scene-swatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  flex: none;
+  border: 1px solid rgba(0, 0, 0, 0.35);
+}
+.office-scene-swatch.s-escritorio {
+  background: linear-gradient(#2f3a58 0 40%, #6b5340 40%);
+}
+.office-scene-swatch.s-jardim {
+  background: linear-gradient(#2f6e3a 0 40%, #6dbb53 40%);
+}
+.office-scene-swatch.s-refeitorio {
+  background: linear-gradient(#e8e4d8 0 40%, #c4bcab 40%);
+}
+.office-scene-swatch.s-descanso {
+  background: linear-gradient(#35606b 0 40%, #a87d55 40%);
+}
+.office-scene-swatch.s-inferno {
+  background: linear-gradient(#2a0b0a 0 30%, #ff7a1a 30% 45%, #3a1210 45%);
+}
+.office-scene-menu {
+  max-height: 70vh;
+  overflow-y: auto;
+  min-width: 240px;
+}
+.office-scene-swatch.s-image {
+  background: linear-gradient(135deg, #8fc3ec, #e98fc4 55%, #f7d046);
+}
+.office-menu-label {
+  font-size: calc(11.5px * var(--font-scale, 1));
+  color: var(--text-3);
+  padding: 6px 10px 2px;
+}
+.office-menu-hint {
+  font-size: calc(11.5px * var(--font-scale, 1));
+  line-height: 1.4;
+  color: var(--text-3);
+  padding: 6px 10px 4px;
+  max-width: 260px;
+  border-top: 1px solid var(--line);
+  margin-top: 3px;
+}
+.office-scene-file {
+  display: flex;
+  align-items: center;
+}
+.office-scene-file > button:first-child {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.office-menu .office-scene-del {
+  padding: 4px 8px;
+  color: var(--text-3);
+}
+.office-menu .office-scene-del:hover {
+  color: var(--danger, #e5534b);
+}
+.office-menu .office-scene-upload {
+  color: var(--brass-strong);
+}
+.office-menu .office-scene-default {
+  color: var(--text-2);
+}
+
+/* Personagem próprio (aba Aparência) */
+.look-own .select {
+  flex: 1;
+  min-width: 0;
+}
+.look-own-help summary {
+  cursor: pointer;
+  color: var(--text-2);
+  font-size: calc(12px * var(--font-scale, 1));
+}
+.look-own-help p {
+  margin: 6px 0;
+  color: var(--text-2);
+  font-size: calc(12px * var(--font-scale, 1));
+}
+.look-own-help .input {
+  width: 100%;
+  margin-bottom: 6px;
+}

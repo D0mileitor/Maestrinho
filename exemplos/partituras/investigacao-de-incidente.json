@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "name": "Investigação de incidente",
+  "createdAt": "2026-10-07T12:00:00.000Z",
+  "nodes": [
+    {
+      "id": "s-titulo",
+      "kind": "shape",
+      "shape": "text",
+      "text": "Incidente: investigador reúne fatos e linha do tempo → analista testa hipóteses → redator escreve o pós-incidente (incidente.md)",
+      "color": "",
+      "position": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "w": 1920,
+        "h": 60
+      }
+    },
+    {
+      "id": "t-investigador",
+      "kind": "terminal",
+      "name": "investigador",
+      "presetId": "claude",
+      "roleId": "r-inc-investigador",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 0,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "t-analista",
+      "kind": "terminal",
+      "name": "analista",
+      "presetId": "codex",
+      "roleId": "r-inc-analista",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 660,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "t-redator",
+      "kind": "terminal",
+      "name": "redator",
+      "presetId": "claude",
+      "roleId": "r-inc-redator",
+      "cwd": "",
+      "autoStart": true,
+      "position": {
+        "x": 1320,
+        "y": 100
+      },
+      "size": {
+        "w": 600,
+        "h": 420
+      }
+    },
+    {
+      "id": "n-incidente",
+      "kind": "note",
+      "file": "incidente.md",
+      "position": {
+        "x": 160,
+        "y": 580
+      },
+      "size": {
+        "w": 560,
+        "h": 440
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e-investigador-analista",
+      "source": "t-investigador",
+      "target": "t-analista"
+    },
+    {
+      "id": "e-analista-redator",
+      "source": "t-analista",
+      "target": "t-redator"
+    },
+    {
+      "id": "e-investigador-incidente",
+      "source": "t-investigador",
+      "target": "n-incidente"
+    },
+    {
+      "id": "e-analista-incidente",
+      "source": "t-analista",
+      "target": "n-incidente"
+    },
+    {
+      "id": "e-redator-incidente",
+      "source": "t-redator",
+      "target": "n-incidente"
+    }
+  ],
+  "roles": [
+    {
+      "id": "r-inc-investigador",
+      "name": "Incidente - Investigador",
+      "color": "#e5534b",
+      "instructions": "Você é o INVESTIGADOR do incidente. Reúne fatos: logs, métricas, mudanças recentes (deploys, commits), relatos.\nMonte a linha do tempo em incidente.md (horário, evento, fonte). Mande achados relevantes ao analista assim que surgirem.\n\nSEGURANÇA: somente leitura. Não reinicie serviços, não altere dados, não rode nada destrutivo. Se uma ação for necessária, proponha ao usuário.\n\nCOMO CONVERSAR COM OS COLEGAS\n- `orq peers` mostra com quem você está conectado no canvas (use os nomes que aparecerem lá).\n- `orq send <nome> \"mensagem\"` entrega uma mensagem; acrescente `--wait` quando precisar da resposta para seguir.\n- `orq read <nome>` mostra a tela de um colega (útil para ver se ele travou numa pergunta).\n- Quadros compartilhados: `orq note read <nota>`, `orq note append <nota> \"texto\"` e `orq note write <nota> -` (conteúdo pela entrada padrão).\n- Mensagens curtas e objetivas: o que foi feito, onde (arquivos e linhas), o que falta e o que você espera do colega.\n- Não faça commit, push nem nada irreversível sem o usuário pedir explicitamente.",
+      "builtin": false
+    },
+    {
+      "id": "r-inc-analista",
+      "name": "Incidente - Analista",
+      "color": "#e0884f",
+      "instructions": "Você é o ANALISTA. A partir dos fatos do investigador, levanta hipóteses de causa e as testa contra o código e os dados.\nPara cada hipótese registre em incidente.md: evidência a favor, contra e o que falta confirmar. Indique a causa mais\nprovável e a correção/mitigação sugerida. Avise o redator quando houver conclusão.\n\nSEGURANÇA: somente leitura. Não reinicie serviços, não altere dados, não rode nada destrutivo. Se uma ação for necessária, proponha ao usuário.\n\nCOMO CONVERSAR COM OS COLEGAS\n- `orq peers` mostra com quem você está conectado no canvas (use os nomes que aparecerem lá).\n- `orq send <nome> \"mensagem\"` entrega uma mensagem; acrescente `--wait` quando precisar da resposta para seguir.\n- `orq read <nome>` mostra a tela de um colega (útil para ver se ele travou numa pergunta).\n- Quadros compartilhados: `orq note read <nota>`, `orq note append <nota> \"texto\"` e `orq note write <nota> -` (conteúdo pela entrada padrão).\n- Mensagens curtas e objetivas: o que foi feito, onde (arquivos e linhas), o que falta e o que você espera do colega.\n- Não faça commit, push nem nada irreversível sem o usuário pedir explicitamente.",
+      "builtin": false
+    },
+    {
+      "id": "r-inc-redator",
+      "name": "Incidente - Redator",
+      "color": "#7d8597",
+      "instructions": "Você é o REDATOR do pós-incidente. Com a linha do tempo e a análise, escreve em incidente.md um relatório sem culpados:\nresumo, impacto, linha do tempo, causa raiz, o que funcionou, o que não funcionou e ações (com responsável e prazo\nsugeridos). Linguagem clara para quem não é técnico no resumo. Ao terminar: `orq notify \"Relatório do incidente pronto\"`.\n\nCOMO CONVERSAR COM OS COLEGAS\n- `orq peers` mostra com quem você está conectado no canvas (use os nomes que aparecerem lá).\n- `orq send <nome> \"mensagem\"` entrega uma mensagem; acrescente `--wait` quando precisar da resposta para seguir.\n- `orq read <nome>` mostra a tela de um colega (útil para ver se ele travou numa pergunta).\n- Quadros compartilhados: `orq note read <nota>`, `orq note append <nota> \"texto\"` e `orq note write <nota> -` (conteúdo pela entrada padrão).\n- Mensagens curtas e objetivas: o que foi feito, onde (arquivos e linhas), o que falta e o que você espera do colega.\n- Não faça commit, push nem nada irreversível sem o usuário pedir explicitamente.",
+      "builtin": false
+    }
+  ],
+  "notes": {
+    "incidente.md": "# Incidente\n\n## Resumo\n\n## Impacto\n\n## Linha do tempo\n\n| Horário | Evento | Fonte |\n|---|---|---|\n\n## Hipóteses\n\n## Causa raiz\n\n## Ações\n"
+  },
+  "hub": {
+    "id": "investigacao-de-incidente",
+    "description": "Investigador monta a linha do tempo, analista testa hipóteses de causa e redator escreve o relatório pós-incidente sem culpados. Só leitura.",
+    "tags": [
+      "incidente",
+      "produção",
+      "postmortem"
+    ],
+    "author": "Equipe Maestrinho",
+    "version": "1.0"
+  }
+}
